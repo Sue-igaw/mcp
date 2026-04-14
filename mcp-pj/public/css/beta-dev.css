@@ -10,9 +10,9 @@
 
 .container{max-width:920px;margin:0 auto;padding:0 32px}
 .section{padding:72px 0}.section+.section{border-top:1px solid var(--border)}
-.section-num{font-size:1.375rem;font-weight:800;color:var(--text-primary);letter-spacing:-.02em;margin-bottom:40px}
+.section-num{font-size:1.375rem;font-weight:800;color:var(--text-primary);letter-spacing:-.02em;margin-bottom:24px}
 h2{font-size:1.625rem;font-weight:800;line-height:1.35;letter-spacing:-.03em;margin-bottom:28px}
-h3{font-size:1.25rem;font-weight:800;line-height:1.35;letter-spacing:-.02em;margin-top:56px;margin-bottom:20px}
+h3{font-size:1.25rem;font-weight:800;line-height:1.35;letter-spacing:-.02em;margin-top:40px;margin-bottom:16px}
 p{font-size:1rem;color:var(--text-secondary);line-height:1.85;margin-bottom:20px}
 strong{color:var(--text-primary);font-weight:700}
 ul,ol{padding-left:24px;margin-bottom:20px}
@@ -62,7 +62,7 @@ th:first-child,td:first-child{width:auto}
 .step-title{font-size:.9375rem;font-weight:700;color:var(--text-primary)}
 .step-desc{font-size:.8125rem;color:var(--text-tertiary);margin-top:2px}
 .step-tag{flex-shrink:0;margin-left:auto}
-.step-arrow{color:var(--text-tertiary);font-size:.875rem;line-height:1;padding:6px 0}
+.step-arrow{color:var(--text-tertiary);font-size:.875rem;line-height:1;padding:10px 0}
 
 .code-block{background:var(--highlight-bg);border:1px solid var(--border);border-radius:10px;padding:20px 24px;font-family:'SF Mono',Consolas,monospace;font-size:.875rem;line-height:1.8;color:var(--text-primary);margin:20px 0;overflow-x:auto;white-space:pre}
 
