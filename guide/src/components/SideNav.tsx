@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 
-const SECTIONS: { items: { id: string; label: string; icon?: string; badge?: string }[] }[] = [
+const SECTIONS: { items: { id: string; label: string; icon?: string }[] }[] = [
   {
     items: [{ id: "overview", label: "시작하기 전에" }],
   },
@@ -9,9 +9,6 @@ const SECTIONS: { items: { id: string; label: string; icon?: string; badge?: str
     items: [
       { id: "kiro", label: "Kiro", icon: "https://kiro.dev/favicon.ico" },
       { id: "claude", label: "Claude Desktop", icon: "https://claude.com/favicon.ico" },
-      { id: "chatgpt", label: "ChatGPT", icon: "/guide/icons/chatgpt.svg", badge: "준비중" },
-      { id: "cursor", label: "Cursor", icon: "https://cursor.com/favicon.ico", badge: "준비중" },
-      { id: "windsurf", label: "Windsurf", icon: "https://windsurf.com/favicon.ico", badge: "준비중" },
     ],
   },
   {
@@ -46,8 +43,8 @@ export default function SideNav() {
   return (
     <nav className="hidden lg:flex flex-col w-60 shrink-0 border-r border-mi-gray-100 sticky top-0 h-screen overflow-y-auto py-10 px-5">
       <div className="px-3 mb-8">
-        <div className="text-[14px] font-bold text-mi-black leading-snug">모바일인덱스 MCP 연동 가이드</div>
-        <span className="inline-flex items-center text-[11px] font-bold text-mi-violet bg-mi-violet-light px-2 py-0.5 rounded-full mt-2">BETA</span>
+        <div className="text-[14px] font-bold text-mi-black leading-snug">모바일인덱스 MCP <span className="inline-flex items-center text-[10px] font-bold text-mi-violet bg-mi-violet-light px-1.5 py-0.5 rounded-full ml-1 align-middle">BETA</span></div>
+        <div className="text-[13px] text-mi-gray-500 mt-1">연동 가이드</div>
       </div>
       {SECTIONS.map((section, i) => (
         <div key={i}>
@@ -67,9 +64,6 @@ export default function SideNav() {
                     <img src={item.icon} alt="" className="w-4 h-4 rounded-sm" />
                   )}
                   {item.label}
-                  {item.badge && (
-                    <span className="text-[10px] font-bold text-amber-600 bg-amber-50 px-1.5 py-0.5 rounded-full ml-1">{item.badge}</span>
-                  )}
                 </a>
               </li>
             ))}

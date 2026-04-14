@@ -144,63 +144,8 @@ export default function Page() {
 
         <Divider />
 
-        {/* ChatGPT */}
-        <Section id="chatgpt" title="ChatGPT" badge="준비중">
-          <Callout>
-            ChatGPT에서 커스텀 MCP 서버 연결은 현재 Team/Business/Enterprise 위주로 점진 배포 중입니다.<br />Plus 플랜에서는 아직 메뉴가 열리지 않을 수 있습니다.
-          </Callout>
-          <H3>설정 방법</H3>
-          <Step num={1}>우측 상단 프로필 &gt; <strong>Settings</strong> &gt; <strong>Developer Mode</strong> 활성화</Step>
-          <Step num={2}><strong>MCP Servers</strong> &gt; <strong>Add Server</strong></Step>
-          <Step num={3}>아래 정보 입력 후 Save</Step>
-          <table className="w-full text-sm mb-4">
-            <thead><tr><Th>항목</Th><Th>입력값</Th></tr></thead>
-            <tbody>
-              <tr><Td>Server Name</Td><Td><IC>mobileindex</IC></Td></tr>
-              <tr><Td>Server URL</Td><Td><IC>https://mcp.mobileindex.com/sse</IC> <DevBadge /></Td></tr>
-              <tr><Td>Authentication</Td><Td>Bearer Token → API 키 입력</Td></tr>
-            </tbody>
-          </table>
-        </Section>
-
-        <Divider />
-
-        {/* Cursor */}
-        <Section id="cursor" title="Cursor" badge="준비중">
-          <H3>설정 방법</H3>
-          <P>프로젝트 루트에 <IC>.cursor/mcp.json</IC> 파일을 생성합니다.</P>
-          <CodeBlock label=".cursor/mcp.json">{`{
-  "mcpServers": {
-    "mobileindex": {
-      "url": "https://mcp.mobileindex.com/sse",
-      "headers": {
-        "Authorization": "Bearer 여기에_API_키_입력"
-      }
-    }
-  }
-}`}</CodeBlock>
-          <H3>연결 확인</H3>
-          <P>Settings &gt; MCP 탭에서 <IC>mobileindex</IC>가 활성화 상태인지 확인합니다.</P>
-        </Section>
-
-        <Divider />
-
-        {/* Windsurf */}
-        <Section id="windsurf" title="Windsurf" badge="준비중">
-          <H3>설정 방법</H3>
-          <P>아래 경로의 설정 파일을 편집합니다.</P>
-          <CodeBlock label="설정 파일 경로">{`~/.codeium/windsurf/mcp_config.json`}</CodeBlock>
-          <CodeBlock label="mcp_config.json">{`{
-  "mcpServers": {
-    "mobileindex": {
-      "url": "https://mcp.mobileindex.com/sse",
-      "headers": {
-        "Authorization": "Bearer 여기에_API_키_입력"
-      }
-    }
-  }
-}`}</CodeBlock>
-        </Section>
+        {/* ChatGPT, Cursor, Windsurf — 추후 추가 예정
+        */}
 
         <Divider />
 

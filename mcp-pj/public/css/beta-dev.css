@@ -10,8 +10,7 @@
 
 .container{max-width:920px;margin:0 auto;padding:0 32px}
 .section{padding:72px 0}.section+.section{border-top:1px solid var(--border)}
-.section-num{font-size:1rem;font-weight:700;color:var(--accent);letter-spacing:.04em;margin-bottom:40px;text-align:center;display:flex;align-items:center;justify-content:center;gap:16px}
-.section-num::before,.section-num::after{content:'';flex:1;height:1px;background:var(--accent);opacity:.3}
+.section-num{font-size:1.375rem;font-weight:800;color:var(--text-primary);letter-spacing:-.02em;margin-bottom:40px}
 h2{font-size:1.625rem;font-weight:800;line-height:1.35;letter-spacing:-.03em;margin-bottom:28px}
 h3{font-size:1.25rem;font-weight:800;line-height:1.35;letter-spacing:-.02em;margin-top:56px;margin-bottom:20px}
 p{font-size:1rem;color:var(--text-secondary);line-height:1.85;margin-bottom:20px}
