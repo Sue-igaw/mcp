@@ -1,0 +1,41 @@
+{
+  "mcpServers": {
+    "mobileindex": {
+      "command": "/usr/local/bin/node",
+      "args": ["src/mobileindex-mcp.mjs"],
+      "env": {
+        "MI_API_TOKEN": "nCLuOmTBtkEKdWIJ7Y2oA1KTLgFiDM8f4PWEAdxJY6u7+12hg1HymbaoV2G/KwZ6slUo943K91Zab9lqIPh2Bw=="
+      },
+      "autoApprove": [
+        "search_app",
+        "get_categories_main",
+        "get_categories_sub",
+        "chart_top_usage",
+        "chart_top_revenue",
+        "chart_market_rank",
+        "chart_market_global_rank",
+        "chart_market_realtime_rank",
+        "usage_rank",
+        "usage_rise_rank",
+        "usage_trend_traffic",
+        "usage_overlap_rank",
+        "app_summary",
+        "app_info",
+        "app_usage",
+        "app_demographic",
+        "app_ranking_history",
+        "app_biz_rate",
+        "app_rate_total",
+        "app_rate",
+        "app_concurrent",
+        "app_break",
+        "app_interest",
+        "app_persona",
+        "app_region",
+        "competitor_install_delete",
+        "competitor_loyalty",
+        "competitor_retention"
+      ]
+    }
+  }
+}

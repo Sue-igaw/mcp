@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>한국투자증권 앱 전략 보고서</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Pretendard', 'Segoe UI', sans-serif; background: #f8f9fa; color: #1a1a2e; line-height: 1.7; }
+  .page { max-width: 860px; margin: 0 auto; padding: 48px 40px; background: #fff; min-height: 100vh; }
+
+  /* 헤더 */
+  .report-header { border-bottom: 3px solid #1a1a2e; padding-bottom: 24px; margin-bottom: 40px; }
+  .report-header h1 { font-size: 32px; font-weight: 800; color: #1a1a2e; letter-spacing: -0.5px; }
+  .report-header .meta { color: #6b7280; font-size: 14px; margin-top: 8px; }
+
+  /* 섹션 */
+  .section { margin-bottom: 48px; }
+  .section-num { font-size: 13px; font-weight: 700; color: #e85d04; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 4px; }
+  .section h2 { font-size: 22px; font-weight: 700; color: #1a1a2e; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 1px solid #e5e7eb; }
+  .section h3 { font-size: 17px; font-weight: 700; color: #374151; margin: 28px 0 12px; }
+  .section p { font-size: 15px; color: #374151; margin-bottom: 14px; }
+
+  /* KPI 카드 */
+  .kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 32px; }
+  .kpi { background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 12px; padding: 20px; text-align: center; }
+  .kpi .label { font-size: 12px; font-weight: 600; color: #6b7280; text-transform: uppercase; letter-spacing: 1px; }
+  .kpi .value { font-size: 30px; font-weight: 800; color: #1a1a2e; margin: 4px 0; }
+  .kpi .change { font-size: 13px; font-weight: 600; }
+  .kpi .up { color: #059669; }
+  .kpi .down { color: #dc2626; }
+  .kpi .neutral { color: #6b7280; }
+
+  /* 테이블 */
+  table { width: 100%; border-collapse: collapse; margin: 16px 0 24px; font-size: 14px; }
+  thead th { background: #f3f4f6; color: #374151; font-weight: 700; padding: 10px 14px; text-align: left; border-bottom: 2px solid #d1d5db; font-size: 13px; }
+  tbody td { padding: 10px 14px; border-bottom: 1px solid #e5e7eb; color: #4b5563; }
+  tbody tr:hover { background: #f9fafb; }
+  .highlight-row td { background: #fff7ed; font-weight: 600; color: #1a1a2e; }
+
+  /* 차트 */
+  .chart-wrap { background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 12px; padding: 24px; margin: 20px 0 28px; }
+  .chart-wrap .chart-title { font-size: 14px; font-weight: 700; color: #374151; margin-bottom: 16px; }
+
+  /* 인사이트 박스 */
+  .insight-box { background: #fff7ed; border-left: 4px solid #e85d04; border-radius: 0 8px 8px 0; padding: 20px 24px; margin: 20px 0; }
+  .insight-box p { font-size: 14px; color: #92400e; margin-bottom: 6px; }
+  .insight-box p:last-child { margin-bottom: 0; }
+
+  /* 전략 카드 */
+  .strategy-card { background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 12px; padding: 24px; margin: 16px 0; }
+  .strategy-card .strat-num { font-size: 12px; font-weight: 800; color: #059669; letter-spacing: 1px; margin-bottom: 4px; }
+  .strategy-card h4 { font-size: 17px; font-weight: 700; color: #1a1a2e; margin-bottom: 10px; }
+  .strategy-card p { font-size: 14px; color: #374151; margin-bottom: 8px; }
+  .strategy-card ul { font-size: 14px; color: #374151; padding-left: 20px; }
+  .strategy-card li { margin-bottom: 6px; }
+
+  /* 로드맵 */
+  .roadmap { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 20px 0; }
+  .roadmap-item { border: 1px solid #e5e7eb; border-radius: 12px; padding: 20px; text-align: center; }
+  .roadmap-item .phase { font-size: 12px; font-weight: 700; color: #e85d04; letter-spacing: 1px; margin-bottom: 6px; }
+  .roadmap-item .target { font-size: 20px; font-weight: 800; color: #1a1a2e; margin-bottom: 8px; }
+  .roadmap-item ul { font-size: 13px; color: #6b7280; list-style: none; padding: 0; }
+  .roadmap-item li { margin-bottom: 4px; }
+
+  /* 결론 */
+  .conclusion { background: #1a1a2e; color: #fff; border-radius: 12px; padding: 32px; margin-top: 40px; }
+  .conclusion h2 { color: #fff; border-bottom: 1px solid #374151; }
+  .conclusion p { color: #d1d5db; font-size: 15px; }
+  .conclusion .highlight { color: #fb923c; font-weight: 700; }
+
+  .footer { text-align: center; color: #9ca3af; font-size: 12px; margin-top: 40px; padding-top: 20px; border-top: 1px solid #e5e7eb; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- 헤더 -->
+  <div class="report-header">
+    <h1>한국투자증권 앱 전략 보고서</h1>
+    <div class="meta">작성일: 2026년 4월 | 데이터 기준: 2026년 3월 | 출처: 모바일인덱스</div>
+  </div>
+
+  <!-- KPI -->
+  <div class="kpi-row">
+    <div class="kpi">
+      <div class="label">MAU</div>
+      <div class="value">267만</div>
+      <div class="change up">▲ 56.6% YoY</div>
+    </div>
+    <div class="kpi">
+      <div class="label">시장 순위</div>
+      <div class="value">5위</div>
+      <div class="change neutral">점유율 16.6%</div>
+    </div>
+    <div class="kpi">
+      <div class="label">월 신규 설치</div>
+      <div class="value">19.4만</div>
+      <div class="change up">▲ 251% YoY</div>
+    </div>
+    <div class="kpi">
+      <div class="label">월 이탈</div>
+      <div class="value">46.3만</div>
+      <div class="change down">경쟁사 이동 50.1%</div>
+    </div>
+  </div>
+
+  <!-- Executive Summary -->
+  <div class="section">
+    <div class="section-num">Executive Summary</div>
+    <p>한국투자증권 앱은 지난 12개월간 증권 앱 시장에서 <strong>가장 빠른 성장세(+56.6%)</strong>를 기록하며, 5위에서 4위권 진입을 눈앞에 두고 있다. 20~30대 여성 투자자 유입이라는 차별화된 강점을 보유하고 있으나, 이탈 고객의 50%가 경쟁사로 이동하는 문제를 해결해야 한다.</p>
+  </div>
+
+  <!-- 1. 시장 환경 분석 -->
+  <div class="section">
+    <div class="section-num">Section 01</div>
+    <h2>시장 환경 분석</h2>
+
+    <h3>증권/투자 앱 시장 규모</h3>
+    <p>증권/투자 앱 업종 전체 MAU는 2025년 4월 1,251만에서 2026년 3월 1,607만으로, 12개월간 약 28.5% 성장했다. 신규 설치는 같은 기간 88만 → 185만으로 2배 이상 증가했다.</p>
+
+    <table>
+      <thead><tr><th>기간</th><th>증권/투자 MAU</th><th>전월 대비</th><th>신규 설치</th></tr></thead>
+      <tbody>
+        <tr><td>2025.04</td><td>1,251만</td><td>-</td><td>88만</td></tr>
+        <tr><td>2025.07</td><td>1,324만</td><td>+5.9%</td><td>119만</td></tr>
+        <tr><td>2025.10</td><td>1,389만</td><td>+4.9%</td><td>148만</td></tr>
+        <tr><td>2026.01</td><td>1,498만</td><td>+7.8%</td><td>194만</td></tr>
+        <tr><td>2026.03</td><td>1,607만</td><td>+4.5%</td><td>185만</td></tr>
+      </tbody>
+    </table>
+
+    <h3>경쟁 구도 (2026년 3월)</h3>
+    <table>
+      <thead><tr><th>순위</th><th>앱</th><th>MAU</th><th>점유율</th><th>12개월 성장률</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>미래에셋 M-STOCK</td><td>341만</td><td>21.2%</td><td>+54.2%</td></tr>
+        <tr><td>2</td><td>키움 영웅문S#</td><td>330만</td><td>20.5%</td><td>+34.7%</td></tr>
+        <tr><td>3</td><td>삼성증권 mPOP</td><td>306만</td><td>19.0%</td><td>+42.1%</td></tr>
+        <tr><td>4</td><td>KB증권 M-able</td><td>272만</td><td>16.9%</td><td>+35.2%</td></tr>
+        <tr class="highlight-row"><td>5</td><td>한국투자증권</td><td>267만</td><td>16.6%</td><td>+56.6%</td></tr>
+        <tr><td>6</td><td>나무증권(NH)</td><td>233만</td><td>14.5%</td><td>-</td></tr>
+        <tr><td>7</td><td>신한 SOL증권</td><td>176만</td><td>11.0%</td><td>-</td></tr>
+      </tbody>
+    </table>
+
+    <div class="chart-wrap">
+      <div class="chart-title">Top 5 증권 앱 MAU 추이 (만 명)</div>
+      <canvas id="mauChart" height="90"></canvas>
+    </div>
+
+    <div class="insight-box">
+      <p>📌 미래에셋이 2025년 하반기에 키움을 역전하고 1위를 차지했다.</p>
+      <p>📌 한투의 성장 기울기가 가장 가파르며, KB와의 교차(4위 탈환)가 임박해 있다.</p>
+      <p>📌 Top 5가 시장의 94%를 점유하는 과점 구조다.</p>
+    </div>
+  </div>
+
+  <!-- 2. 한투 현황 진단 -->
+  <div class="section">
+    <div class="section-num">Section 02</div>
+    <h2>한국투자증권 앱 현황 진단</h2>
+
+    <h3>사용자 성장 & 신규 설치 추이</h3>
+    <div class="chart-wrap">
+      <div class="chart-title">한투 MAU & 신규 설치 추이</div>
+      <canvas id="hantuChart" height="100"></canvas>
+    </div>
+    <p>2025년 10월 이후 급격한 성장 곡선을 그리고 있다. 2026년 1~2월에 신규 설치가 월 19~22만 건으로 폭증했다.</p>
+
+    <h3>사용 시간 (인게이지먼트)</h3>
+    <div class="chart-wrap">
+      <div class="chart-title">총 사용 시간 추이 (만 시간)</div>
+      <canvas id="timeChart" height="90"></canvas>
+    </div>
+    <p>총 사용 시간은 12개월간 139% 증가. 1인당 평균 사용 시간도 162분 → 248분으로 53% 늘었다. 사용자뿐 아니라 인게이지먼트도 깊어지고 있다.</p>
+
+    <h3>사용자 데모그래픽</h3>
+    <table>
+      <thead><tr><th>구분</th><th>한투</th><th>미래에셋</th><th>키움</th><th>삼성</th><th>KB</th></tr></thead>
+      <tbody>
+        <tr class="highlight-row"><td>여성 비율</td><td>57.7%</td><td>54.7%</td><td>49.7%</td><td>52.8%</td><td>53.7%</td></tr>
+        <tr><td>남성 비율</td><td>42.3%</td><td>45.3%</td><td>50.3%</td><td>47.2%</td><td>46.4%</td></tr>
+      </tbody>
+    </table>
+
+    <div class="chart-wrap">
+      <div class="chart-title">2030 여성 비율 비교 (%)</div>
+      <canvas id="demoChart" height="90"></canvas>
+    </div>
+
+    <div class="insight-box">
+      <p>📌 한투는 여성 20대(12.8%)와 30대(15.2%) 비율이 경쟁사 대비 압도적으로 높다.</p>
+      <p>📌 키움(49.7%)과 여성 비율 격차가 8%p — 젊은 여성 투자자가 한투를 선택하는 뚜렷한 패턴이 존재한다.</p>
+    </div>
+
+    <h3>사용자 페르소나 Top 10</h3>
+    <div class="chart-wrap">
+      <div class="chart-title">한투 사용자 페르소나</div>
+      <canvas id="personaChart" height="110"></canvas>
+    </div>
+    <p>가상화폐 이용자 48.7%, 부동산 투자 관심 48.1% — 주식 외 멀티 자산에 관심이 높은 투자자층이다. 직장인 50.6%, 초등학생 학부모 27.6%로 안정적 소득 기반의 30~40대 자녀 양육 세대가 핵심이다.</p>
+
+    <h3>지역 분포</h3>
+    <table>
+      <thead><tr><th>순위</th><th>지역</th><th>비율</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>서울</td><td>26.9%</td></tr>
+        <tr><td>2</td><td>경기</td><td>25.4%</td></tr>
+        <tr><td>3</td><td>부산</td><td>8.0%</td></tr>
+        <tr><td>4</td><td>광주</td><td>5.2%</td></tr>
+        <tr><td>5</td><td>인천</td><td>4.9%</td></tr>
+      </tbody>
+    </table>
+    <p>수도권(서울+경기+인천) 비율 57.2%로 수도권 집중도가 높다.</p>
+  </div>
+
+  <!-- 3. 이탈 분석 -->
+  <div class="section">
+    <div class="section-num">Section 03</div>
+    <h2>이탈 분석 — 가장 시급한 과제</h2>
+
+    <p>2026년 3월 기준, 한국투자증권 앱 이탈 고객 수: <strong>46.3만 명</strong></p>
+
+    <table>
+      <thead><tr><th>구분</th><th>수치</th><th>비율</th></tr></thead>
+      <tbody>
+        <tr><td>업종 내 이동 (경쟁사로 전환)</td><td>23.2만</td><td>50.1%</td></tr>
+        <tr><td>업종 외 이탈 (증권 앱 자체를 안 씀)</td><td>23.1만</td><td>49.9%</td></tr>
+      </tbody>
+    </table>
+
+    <div class="chart-wrap">
+      <div class="chart-title">이탈 고객 이동 대상</div>
+      <canvas id="churnChart" height="100"></canvas>
+    </div>
+
+    <table>
+      <thead><tr><th>순위</th><th>이동 대상</th><th>이탈 수</th><th>비율</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>미래에셋 M-STOCK</td><td>7.2만</td><td>15.5%</td></tr>
+        <tr><td>2</td><td>삼성증권 mPOP</td><td>6.0만</td><td>13.0%</td></tr>
+        <tr><td>3</td><td>키움 영웅문S#</td><td>5.3만</td><td>11.6%</td></tr>
+        <tr><td>4</td><td>KB증권 M-able</td><td>4.7만</td><td>10.3%</td></tr>
+        <tr><td>5</td><td>나무증권(NH)</td><td>4.4만</td><td>9.6%</td></tr>
+      </tbody>
+    </table>
+
+    <div class="insight-box">
+      <p>📌 이탈 고객의 절반(50.1%)이 경쟁사로 갔다 — 이건 심각한 신호다.</p>
+      <p>📌 미래에셋으로의 이탈이 가장 크다(15.5%). 1위 앱의 흡인력이 작용하고 있다.</p>
+      <p>📌 신규 유입(월 19만)은 강하지만, 이탈(월 46만)도 크다. 이탈률을 줄이지 않으면 성장 한계에 도달한다.</p>
+    </div>
+  </div>
+
+  <!-- 4. 전략 방향 -->
+  <div class="section">
+    <div class="section-num">Section 04</div>
+    <h2>전략 방향</h2>
+
+    <div class="strategy-card">
+      <div class="strat-num">STRATEGY 01</div>
+      <h4>"2030 여성 투자자" 포지셔닝 강화</h4>
+      <p>현재 한투의 가장 큰 차별점은 20~30대 여성 비율이 경쟁사 대비 압도적으로 높다는 것이다. 이건 우연이 아니라 자산이다.</p>
+      <ul>
+        <li>20~30대 여성 타겟 UX 최적화 (직관적 UI, 투자 입문 콘텐츠)</li>
+        <li>"첫 투자" 온보딩 경험 강화 — 신규 설치 월 19만 중 상당수가 투자 입문자</li>
+        <li>여성 투자 커뮤니티/콘텐츠 — OTT(83.5%), 쇼핑(65.5%) 관심과 연계한 생활 밀착형 투자 콘텐츠</li>
+        <li>자녀 교육비, 생활비 관리와 연계한 투자 상품 추천 (초등학생 학부모 27.6%)</li>
+      </ul>
+    </div>
+
+    <div class="strategy-card">
+      <div class="strat-num">STRATEGY 02</div>
+      <h4>이탈 방어 — 리텐션 강화</h4>
+      <p>월 46만 이탈 중 23만이 경쟁사로 간다. 이걸 10%만 줄여도 월 2.3만 순증 효과.</p>
+      <ul>
+        <li>이탈 징후 감지 시스템 — 사용 빈도 감소 사용자에게 선제적 리인게이지먼트</li>
+        <li>미래에셋 대비 부족한 기능 벤치마킹 (이탈 1위 대상)</li>
+        <li>수수료/혜택 외에 "떠나기 아까운 경험"을 만들어야 함</li>
+      </ul>
+    </div>
+
+    <div class="strategy-card">
+      <div class="strat-num">STRATEGY 03</div>
+      <h4>멀티 자산 투자 플랫폼으로 확장</h4>
+      <p>페르소나 데이터가 명확한 방향을 보여준다: 가상화폐 관심 48.7%, 부동산 투자 관심 48.1%, 조각 투자 관심 17.3%</p>
+      <ul>
+        <li>주식 + 크립토 + 부동산 + 조각투자 "올인원 자산 관리" 포지셔닝</li>
+        <li>사용자 절반이 이미 가상화폐에 관심 → 크립토 연동은 리텐션에도 직결</li>
+        <li>부동산 투자 정보/리츠 상품 연계</li>
+      </ul>
+    </div>
+
+    <div class="strategy-card">
+      <div class="strat-num">STRATEGY 04</div>
+      <h4>KB 역전 → 4위 확보 (단기 목표)</h4>
+      <p>현재 KB와의 MAU 격차: 5만 명. 성장률 차이(한투 56.6% vs KB 35.2%)를 감안하면 2~3개월 내 역전 가능.</p>
+      <ul>
+        <li>4위 확보 후 "Big 4 증권 앱" 포지셔닝으로 브랜딩 전환</li>
+        <li>수도권 집중도(57.2%)를 활용한 타겟 마케팅 강화</li>
+        <li>신규 설치 모멘텀(월 19만) 유지를 위한 퍼포먼스 마케팅 지속</li>
+      </ul>
+    </div>
+
+    <div class="strategy-card">
+      <div class="strat-num">STRATEGY 05</div>
+      <h4>생활 밀착형 투자 콘텐츠</h4>
+      <p>관심 업종 데이터에서 식음료(+29%p), 가정/생활(+25%p), 건강/의료(+25%p)가 두드러진다.</p>
+      <ul>
+        <li>"내가 쓰는 브랜드에 투자하기" — 스타벅스, 쿠팡 등 일상 브랜드와 연결된 투자 콘텐츠</li>
+        <li>생활비 지출 패턴 기반 투자 추천</li>
+        <li>건강/보험 관심(60.2%)과 연계한 장기 자산 관리 서비스</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 5. 로드맵 -->
+  <div class="section">
+    <div class="section-num">Section 05</div>
+    <h2>KPI 및 로드맵</h2>
+    <div class="roadmap">
+      <div class="roadmap-item">
+        <div class="phase">단기 3개월</div>
+        <div class="target">MAU 280만</div>
+        <ul>
+          <li>KB 역전, 4위 확보</li>
+          <li>월 이탈률 10% 감소</li>
+          <li>신규 설치 월 20만 유지</li>
+        </ul>
+      </div>
+      <div class="roadmap-item">
+        <div class="phase">중기 6개월</div>
+        <div class="target">MAU 320만</div>
+        <ul>
+          <li>삼성증권과 격차 축소</li>
+          <li>1인당 사용 시간 300분</li>
+          <li>2030 여성 캠페인 런칭</li>
+        </ul>
+      </div>
+      <div class="roadmap-item">
+        <div class="phase">장기 12개월</div>
+        <div class="target">MAU 400만</div>
+        <ul>
+          <li>Top 3 진입</li>
+          <li>멀티 자산 플랫폼 출시</li>
+          <li>경쟁사 이탈 50%→35%</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="chart-wrap">
+      <div class="chart-title">12개월 성장률 비교</div>
+      <canvas id="growthChart" height="80"></canvas>
+    </div>
+  </div>
+
+  <!-- 결론 -->
+  <div class="conclusion">
+    <div class="section-num" style="color:#fb923c;">Conclusion</div>
+    <h2>결론</h2>
+    <p>한국투자증권 앱은 지금 가장 좋은 위치에 있다. 시장 최고 성장률, 차별화된 사용자층(2030 여성), 그리고 인게이지먼트 상승이라는 세 가지 모멘텀을 동시에 보유하고 있다.</p>
+    <br>
+    <p>그러나 이탈률이 높다는 건, 들어오는 물만큼 빠지는 물도 많다는 뜻이다. 지금의 성장이 "시장 전체 성장에 편승한 것"인지, "진짜 경쟁력에 의한 것"인지를 냉정하게 구분해야 한다.</p>
+    <br>
+    <p>데이터가 가리키는 방향은 명확하다: <span class="highlight">2030 여성 투자자의 "첫 번째 증권 앱"이 되고, 떠나지 않게 만들어라.</span></p>
+  </div>
+
+  <div class="footer">본 보고서는 모바일인덱스 MCP를 통해 수집된 데이터를 기반으로 작성되었습니다.</div>
+
+</div>
+
+<script>
+const c = { orange:'#e85d04', blue:'#3b82f6', green:'#059669', purple:'#8b5cf6', cyan:'#0891b2', gray:'#9ca3af', pink:'#ec4899', red:'#dc2626' };
+const grid = '#f3f4f6';
+const font = '#6b7280';
+const opt = {
+  responsive:true,
+  plugins:{ legend:{ labels:{ color:font, font:{size:12}, usePointStyle:true, pointStyle:'circle', padding:16 }}},
+  scales:{ x:{ ticks:{color:font,font:{size:11}}, grid:{color:grid}}, y:{ ticks:{color:font,font:{size:11}}, grid:{color:grid}} }
+};
+
+// 1. Top 5 MAU
+new Chart(document.getElementById('mauChart'),{
+  type:'line',
+  data:{
+    labels:['25.04','25.05','25.06','25.07','25.08','25.09','25.10','25.11','25.12','26.01','26.02','26.03'],
+    datasets:[
+      {label:'미래에셋',data:[221,233,234,250,249,241,276,290,293,318,338,341],borderColor:c.blue,backgroundColor:c.blue+'15',tension:.35,pointRadius:2,borderWidth:2},
+      {label:'키움',data:[245,245,259,277,268,267,288,297,285,312,321,330],borderColor:c.purple,backgroundColor:c.purple+'15',tension:.35,pointRadius:2,borderWidth:2},
+      {label:'삼성',data:[215,225,235,240,237,245,256,257,274,282,304,306],borderColor:c.cyan,backgroundColor:c.cyan+'15',tension:.35,pointRadius:2,borderWidth:2},
+      {label:'KB',data:[201,203,212,234,223,242,251,244,233,257,255,272],borderColor:c.gray,backgroundColor:c.gray+'15',tension:.35,pointRadius:2,borderWidth:2},
+      {label:'한투',data:[171,181,177,190,179,177,194,189,197,225,249,267],borderColor:c.orange,backgroundColor:c.orange+'20',tension:.35,pointRadius:4,borderWidth:3,fill:true},
+    ]
+  },
+  options:{...opt,scales:{...opt.scales,y:{...opt.scales.y,title:{display:true,text:'만 명',color:font}}}}
+});
+
+// 2. 한투 MAU + 신규설치
+new Chart(document.getElementById('hantuChart'),{
+  type:'bar',
+  data:{
+    labels:['25.04','25.05','25.06','25.07','25.08','25.09','25.10','25.11','25.12','26.01','26.02','26.03'],
+    datasets:[
+      {label:'MAU (만)',data:[171,181,177,190,179,177,194,189,197,225,249,267],backgroundColor:c.orange+'88',borderRadius:6,yAxisID:'y'},
+      {label:'신규 설치 (만)',data:[5.5,4.6,5.8,7.7,7.1,7.8,11.8,9.6,14.0,19.5,21.9,19.4],type:'line',borderColor:c.green,backgroundColor:c.green+'20',tension:.35,pointRadius:4,borderWidth:2.5,yAxisID:'y1'},
+    ]
+  },
+  options:{...opt,scales:{x:opt.scales.x,y:{...opt.scales.y,position:'left',title:{display:true,text:'MAU (만)',color:font}},y1:{position:'right',ticks:{color:font},grid:{display:false},title:{display:true,text:'신규 설치 (만)',color:font}}}}
+});
+
+// 3. 사용 시간
+new Chart(document.getElementById('timeChart'),{
+  type:'line',
+  data:{
+    labels:['25.04','25.05','25.06','25.07','25.08','25.09','25.10','25.11','25.12','26.01','26.02','26.03'],
+    datasets:[{label:'총 사용 시간 (만 시간)',data:[462,441,547,628,494,587,690,653,649,979,922,1103],borderColor:c.cyan,backgroundColor:c.cyan+'18',fill:true,tension:.35,pointRadius:3,borderWidth:2.5}]
+  },
+  options:opt
+});
+
+// 4. 2030 여성 비교
+new Chart(document.getElementById('demoChart'),{
+  type:'bar',
+  data:{
+    labels:['한투','미래에셋','키움','삼성','KB'],
+    datasets:[
+      {label:'여성 20대',data:[12.8,10.8,8.0,9.3,9.0],backgroundColor:'rgba(236,72,153,0.7)',borderRadius:6,barPercentage:0.7,categoryPercentage:0.7},
+      {label:'여성 30대',data:[15.2,13.0,13.6,12.2,12.5],backgroundColor:'rgba(139,92,246,0.7)',borderRadius:6,barPercentage:0.7,categoryPercentage:0.7},
+    ]
+  },
+  options:{responsive:true,plugins:{legend:{labels:{color:font,font:{size:12},usePointStyle:true,pointStyle:'circle',padding:16}}},scales:{x:{ticks:{color:font,font:{size:11}},grid:{color:grid},grouped:true},y:{beginAtZero:true,ticks:{color:font,font:{size:11}},grid:{color:grid},title:{display:true,text:'%',color:font}}}}
+});
+
+// 5. 이탈 도넛
+new Chart(document.getElementById('churnChart'),{
+  type:'doughnut',
+  data:{
+    labels:['미래에셋','삼성증권','키움증권','KB증권','나무증권','업종 외 이탈'],
+    datasets:[{data:[15.5,13.0,11.6,10.3,9.6,40.0],backgroundColor:[c.blue,c.cyan,c.purple,c.gray,c.green,'#e5e7eb'],borderWidth:0}]
+  },
+  options:{responsive:true,cutout:'55%',plugins:{legend:{position:'right',labels:{color:font,font:{size:12},usePointStyle:true,pointStyle:'circle',padding:12}}}}
+});
+
+// 6. 페르소나
+new Chart(document.getElementById('personaChart'),{
+  type:'bar',
+  data:{
+    labels:['음악 구독','OTT 구독','식료품 쇼퍼','보험 가입자','증권 상위40%','직장인','가상화폐','부동산 투자','아웃도어','제2금융권'],
+    datasets:[{label:'비율 (%)',data:[88.3,83.5,65.5,60.2,55.0,50.6,48.7,48.1,44.7,38.7],backgroundColor:[c.orange,c.orange+'dd',c.orange+'bb',c.orange+'aa',c.orange+'99',c.orange+'88',c.orange+'77',c.orange+'66',c.orange+'55',c.orange+'44'],borderRadius:6}]
+  },
+  options:{responsive:true,plugins:{legend:{display:false}},indexAxis:'y',scales:{x:{max:100,ticks:{color:font,font:{size:11}},grid:{color:grid},title:{display:true,text:'%',color:font}},y:{ticks:{color:font,font:{size:11}},grid:{color:grid}}}}
+});
+
+// 7. 성장률
+new Chart(document.getElementById('growthChart'),{
+  type:'bar',
+  data:{
+    labels:['한투','미래에셋','삼성','KB','키움'],
+    datasets:[{label:'12개월 성장률 (%)',data:[56.6,54.2,42.1,35.2,34.7],backgroundColor:[c.orange,c.blue+'88',c.cyan+'88',c.gray+'88',c.purple+'88'],borderRadius:8}]
+  },
+  options:{responsive:true,plugins:{legend:{display:false}},indexAxis:'y',scales:{x:{max:60,ticks:{color:font,font:{size:11}},grid:{color:grid},title:{display:true,text:'%',color:font}},y:{ticks:{color:font,font:{size:11}},grid:{color:grid}}}}
+});
+</script>
+</body>
+</html>

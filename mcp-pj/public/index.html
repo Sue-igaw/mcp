@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>모바일인덱스 MCP PJ</title>
+<link rel="stylesheet" href="/css/common.css?v=2">
+</head>
+<body>
+
+<!-- 로딩 -->
+<div id="loading">로딩 중...</div>
+
+<!-- 로그인 화면 -->
+<div id="login">
+<div class="login-screen">
+<div class="login-box">
+<div class="login-logo">🗂️ 모바일인덱스 MCP 상품 PJ</div>
+<div class="login-sub">기획 문서 모음이며, @igaworks.com 만 접근 가능합니다.</div>
+<button class="login-btn" id="loginBtn">
+<img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google">
+Google 계정으로 로그인
+</button>
+<div class="login-error" id="loginError"></div>
+</div>
+</div>
+</div>
+
+<!-- 앱 (로그인 후) -->
+<div id="app">
+<div class="topbar">
+<div class="topbar-left">
+<nav class="topbar-nav">
+<span class="nav-disabled">사업기획서 <span class="nav-badge">준비중</span></span>
+<a href="#beta-dev" class="active" data-page="beta-dev">BETA 개발안</a>
+<a href="https://mobileindex-mcp.web.app/guide/" target="_blank" rel="noopener">BETA 사용 가이드 ↗</a>
+</nav>
+</div>
+<div class="topbar-right">
+<span class="topbar-user" id="userName"></span>
+<button class="topbar-logout" id="logoutBtn">로그아웃</button>
+</div>
+</div>
+<div id="pageContent"></div>
+</div>
+
+<!-- Firebase SDK -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.7.1/firebase-app.js";
+import { getAuth, signInWithPopup, signOut, onAuthStateChanged, GoogleAuthProvider } from "https://www.gstatic.com/firebasejs/11.7.1/firebase-auth.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBRHCcz7jQfGLV4pUAUPPpiBZrvEjRDQDU",
+  authDomain: "mobileindex-mcp.firebaseapp.com",
+  projectId: "mobileindex-mcp",
+  storageBucket: "mobileindex-mcp.firebasestorage.app",
+  messagingSenderId: "355849060314",
+  appId: "1:355849060314:web:95f7034928ecdd9211cae3"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const provider = new GoogleAuthProvider();
+const ALLOWED_DOMAIN = "igaworks.com";
+
+const $loading = document.getElementById("loading");
+const $login = document.getElementById("login");
+const $app = document.getElementById("app");
+const $loginBtn = document.getElementById("loginBtn");
+const $logoutBtn = document.getElementById("logoutBtn");
+const $loginError = document.getElementById("loginError");
+const $userName = document.getElementById("userName");
+const $pageContent = document.getElementById("pageContent");
+
+function showScreen(s) {
+  $loading.style.display = s === "loading" ? "flex" : "none";
+  $login.style.display = s === "login" ? "block" : "none";
+  $app.style.display = s === "app" ? "block" : "none";
+}
+
+function showError(msg) {
+  $loginError.textContent = msg;
+  $loginError.style.display = "block";
+}
+
+async function loadPage(page) {
+  try {
+    const res = await fetch(`/pages/${page}.html?t=${Date.now()}`);
+    if (!res.ok) throw new Error();
+    $pageContent.innerHTML = await res.text();
+  } catch {
+    $pageContent.innerHTML = '<div style="padding:80px;text-align:center;color:#8b95a1">페이지를 찾을 수 없습니다</div>';
+  }
+  document.querySelectorAll(".topbar-nav a[data-page]").forEach(a => {
+    a.classList.toggle("active", a.dataset.page === page);
+  });
+}
+
+document.querySelectorAll(".topbar-nav a[data-page]").forEach(a => {
+  a.addEventListener("click", e => { e.preventDefault(); loadPage(a.dataset.page); });
+});
+
+$loginBtn.addEventListener("click", async () => {
+  $loginError.style.display = "none";
+  try {
+    const result = await signInWithPopup(auth, provider);
+    const email = result.user.email || "";
+    if (!email.endsWith("@" + ALLOWED_DOMAIN)) {
+      await signOut(auth);
+      showError("@" + ALLOWED_DOMAIN + " 계정만 접근할 수 있습니다.");
+    }
+  } catch (err) {
+    if (err.code !== "auth/popup-closed-by-user") showError("로그인에 실패했습니다.");
+  }
+});
+
+$logoutBtn.addEventListener("click", () => signOut(auth));
+
+onAuthStateChanged(auth, user => {
+  if (user && user.email && user.email.endsWith("@" + ALLOWED_DOMAIN)) {
+    $userName.textContent = user.email;
+    showScreen("app");
+    loadPage("beta-dev");
+  } else {
+    showScreen("login");
+  }
+});
+</script>
+
+</body>
+</html>

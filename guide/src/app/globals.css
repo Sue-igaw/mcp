@@ -1,0 +1,40 @@
+@import "tailwindcss";
+
+:root {
+  --mi-violet: #7730EA;
+  --mi-violet-light: #f6f2ff;
+  --mi-violet-mid: #e8dcfc;
+  --mi-black: #191f28;
+  --mi-gray-900: #333d4b;
+  --mi-gray-700: #4e5968;
+  --mi-gray-500: #8b95a1;
+  --mi-gray-300: #d1d6db;
+  --mi-gray-100: #f2f4f6;
+  --mi-gray-50: #f9fafb;
+}
+
+@theme inline {
+  --color-mi-violet: var(--mi-violet);
+  --color-mi-violet-light: var(--mi-violet-light);
+  --color-mi-violet-mid: var(--mi-violet-mid);
+  --color-mi-black: var(--mi-black);
+  --color-mi-gray-900: var(--mi-gray-900);
+  --color-mi-gray-700: var(--mi-gray-700);
+  --color-mi-gray-500: var(--mi-gray-500);
+  --color-mi-gray-300: var(--mi-gray-300);
+  --color-mi-gray-100: var(--mi-gray-100);
+  --color-mi-gray-50: var(--mi-gray-50);
+  --font-pretendard: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  --font-mono: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+}
+
+body {
+  background: #fff;
+  color: var(--mi-gray-900);
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--mi-violet-mid);
+  color: var(--mi-black);
+}

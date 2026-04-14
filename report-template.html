@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>모바일인덱스 데이터 기반 리포트</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+:root {
+  --accent: #3182f6;
+  --accent-light: #e8f3ff;
+  --text-primary: #191f28;
+  --text-secondary: #4e5968;
+  --text-tertiary: #8b95a1;
+  --border: #e5e8eb;
+  --highlight-bg: #f8f9fa;
+  --bg: #ffffff;
+  /* 데이터 시각화 컬러 — 필요에 따라 교체 */
+  --c1: #3182f6; --c1-light: #e8f3ff;  /* 주요 대상 */
+  --c2: #E8484A; --c2-light: #FDEAEA;  /* 경쟁사 A */
+  --c3: #2B7FE0; --c3-light: #E8F1FD;  /* 경쟁사 B */
+  --c4: #10a37f; --c4-light: #E6F7F2;  /* 경쟁사 C */
+  --c5: #C47F0D; --c5-light: #FEF5E4;  /* 경쟁사 D */
+  --c-muted: #8b95a1;
+  --green: #10a37f;
+  --red: #E8484A;
+  --amber: #C47F0D;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+  background: var(--bg); color: var(--text-primary); font-size: 14px; line-height: 1.8;
+  word-break: keep-all; -webkit-font-smoothing: antialiased;
+}
+.page { width: 100%; max-width: 794px; margin: 0 auto; background: var(--bg); }
+</style>
+</head>
+<body>
+<div class="page">
+<style>
+/* ══════════════════════════════════════
+   COVER
+   ══════════════════════════════════════ */
+.cover { background: var(--text-primary); padding: 60px 56px 52px; position: relative; overflow: hidden; }
+.cover::before { content: ''; position: absolute; top: -80px; right: -60px; width: 320px; height: 320px; border-radius: 50%; background: radial-gradient(circle, rgba(49,130,246,0.25) 0%, transparent 70%); }
+.cover-eyebrow { font-size: 0.75rem; font-weight: 600; color: rgba(255,255,255,0.4); letter-spacing: 0.08em; margin-bottom: 20px; }
+.cover-title { font-size: 2rem; font-weight: 800; line-height: 1.25; color: #fff; margin-bottom: 10px; position: relative; z-index: 1; letter-spacing: -0.03em; }
+.cover-title span { color: var(--accent); }
+.cover-sub { font-size: 0.9375rem; color: rgba(255,255,255,0.5); margin-bottom: 48px; position: relative; z-index: 1; }
+.cover-meta { display: flex; gap: 32px; position: relative; z-index: 1; }
+.cover-meta-item { border-left: 2px solid rgba(255,255,255,0.12); padding-left: 16px; }
+.cover-meta-label { font-size: 0.625rem; color: rgba(255,255,255,0.3); letter-spacing: 0.06em; margin-bottom: 4px; }
+.cover-meta-val { font-size: 0.8125rem; color: rgba(255,255,255,0.65); font-weight: 500; }
+
+/* ══════════════════════════════════════
+   BODY & SECTION
+   ══════════════════════════════════════ */
+.body { padding: 48px 56px; }
+.section { margin-bottom: 44px; }
+.section-label { font-size: 0.6875rem; font-weight: 700; color: var(--accent); letter-spacing: 0.08em; margin-bottom: 6px; }
+.section-title { font-size: 1.25rem; font-weight: 800; color: var(--text-primary); margin-bottom: 20px; line-height: 1.3; letter-spacing: -0.02em; }
+.divider { height: 1px; background: var(--border); margin-bottom: 20px; }
+.desc { font-size: 0.8125rem; color: var(--text-secondary); line-height: 1.75; margin-bottom: 16px; }
+
+/* ══════════════════════════════════════
+   KPI CARDS
+   ══════════════════════════════════════ */
+.kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 10px; margin-bottom: 10px; }
+.kpi-card { background: var(--highlight-bg); padding: 16px 14px; position: relative; overflow: hidden; }
+.kpi-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--c-muted); }
+.kpi-label { font-size: 0.6875rem; color: var(--text-tertiary); margin-bottom: 6px; font-weight: 500; }
+.kpi-val { font-size: 1.25rem; font-weight: 700; color: var(--text-primary); line-height: 1; margin-bottom: 6px; }
+.kpi-sub { font-size: 0.6875rem; font-weight: 600; }
+.up { color: var(--green); } .down { color: var(--red); } .flat { color: var(--text-tertiary); } .warn { color: var(--amber); }
+.kpi-note { font-size: 0.6875rem; color: var(--text-tertiary); background: var(--highlight-bg); border-left: 3px solid var(--border); padding: 8px 12px; margin-top: 8px; }
+
+/* ══════════════════════════════════════
+   CHART
+   ══════════════════════════════════════ */
+.chart-wrap { background: var(--bg); border: 1px solid var(--border); padding: 20px 20px 12px; margin-bottom: 12px; }
+.chart-label { font-size: 0.75rem; color: var(--text-tertiary); margin-bottom: 12px; }
+.chart-legend { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 14px; font-size: 0.6875rem; color: var(--text-secondary); }
+.legend-item { display: flex; align-items: center; gap: 6px; }
+.legend-dot { width: 28px; height: 3px; flex-shrink: 0; }
+.legend-dot.dashed { background: repeating-linear-gradient(to right, var(--c-muted) 0, var(--c-muted) 4px, transparent 4px, transparent 8px); }
+</style>
+<style>
+/* ══════════════════════════════════════
+   CASE CARDS (사례 분석)
+   ══════════════════════════════════════ */
+.case-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.case-card { border: 1px solid var(--border); overflow: hidden; }
+.case-header { padding: 12px 16px 10px; display: flex; align-items: center; gap: 10px; }
+.case-badge { font-size: 0.625rem; font-weight: 700; letter-spacing: 0.04em; padding: 3px 9px; }
+.case-name { font-size: 0.8125rem; font-weight: 700; color: var(--text-primary); }
+.case-body { padding: 0 16px 14px; }
+.case-uplift { font-size: 1.5rem; font-weight: 900; color: var(--green); line-height: 1; margin-bottom: 6px; }
+.case-desc { font-size: 0.75rem; color: var(--text-secondary); line-height: 1.65; }
+
+/* ══════════════════════════════════════
+   BAR CHART (인구통계 등)
+   ══════════════════════════════════════ */
+.demo-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-bottom: 16px; }
+.demo-card { border: 1px solid var(--border); padding: 16px; }
+.demo-title { font-size: 0.8125rem; font-weight: 700; color: var(--text-primary); margin-bottom: 12px; }
+.bar-row { display: flex; align-items: center; gap: 7px; margin-bottom: 7px; font-size: 0.6875rem; }
+.bar-label { width: 48px; color: var(--text-tertiary); flex-shrink: 0; font-size: 0.65rem; }
+.bar-track { flex: 1; height: 7px; background: var(--highlight-bg); overflow: hidden; }
+.bar-fill { height: 100%; }
+.bar-val { width: 32px; text-align: right; font-weight: 600; color: var(--text-primary); font-size: 0.65rem; }
+.demo-note { font-size: 0.6875rem; color: var(--text-tertiary); margin-top: 10px; line-height: 1.55; border-top: 1px solid var(--border); padding-top: 8px; }
+
+/* ══════════════════════════════════════
+   INSIGHT CARDS (핵심 수치)
+   ══════════════════════════════════════ */
+.insight-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 10px; }
+.insight-card { background: var(--highlight-bg); padding: 14px 16px; }
+.insight-label { font-size: 0.6875rem; color: var(--text-tertiary); margin-bottom: 4px; }
+.insight-val { font-size: 1.125rem; font-weight: 700; color: var(--text-primary); margin-bottom: 3px; }
+.insight-sub { font-size: 0.6875rem; font-weight: 500; }
+
+/* ══════════════════════════════════════
+   STRATEGY CARDS (전략 제언)
+   ══════════════════════════════════════ */
+.strategy-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.strategy-card { border: 1px solid var(--border); padding: 18px 18px 16px; position: relative; overflow: hidden; }
+.strategy-card::after { content: attr(data-num); position: absolute; right: 14px; top: 10px; font-size: 2.5rem; font-weight: 800; color: rgba(0,0,0,0.03); line-height: 1; }
+.strategy-accent { width: 28px; height: 3px; margin-bottom: 10px; }
+.strategy-name { font-size: 0.875rem; font-weight: 700; color: var(--text-primary); margin-bottom: 7px; }
+.strategy-desc { font-size: 0.75rem; color: var(--text-secondary); line-height: 1.65; }
+
+/* ══════════════════════════════════════
+   COMPARISON TABLE (경쟁 비교)
+   ══════════════════════════════════════ */
+.comp-table { width: 100%; border-collapse: collapse; font-size: 0.75rem; margin-top: 4px; }
+.comp-table th { background: var(--text-primary); color: white; padding: 10px 14px; text-align: left; font-weight: 600; font-size: 0.6875rem; letter-spacing: 0.04em; }
+.comp-table td { padding: 10px 14px; border-bottom: 1px solid var(--border); vertical-align: middle; color: var(--text-secondary); }
+.comp-table tr:last-child td { border-bottom: none; }
+.comp-table tr:nth-child(even) td { background: var(--highlight-bg); }
+.pill { display: inline-block; font-size: 0.625rem; font-weight: 700; padding: 2px 8px; }
+
+/* ══════════════════════════════════════
+   FOOTER
+   ══════════════════════════════════════ */
+.footer { background: var(--text-primary); padding: 22px 56px; }
+.footer-left { font-size: 0.6875rem; color: rgba(255,255,255,0.35); }
+</style>
+
+<!-- ══════════════════════════════════════════════
+     COVER — 보고서 표지
+     ══════════════════════════════════════════════ -->
+<div class="cover">
+  <div class="cover-eyebrow">모바일인덱스 데이터 기반 리포트</div>
+  <div class="cover-title">[보고서 제목]<span> [강조 키워드]</span><br>[부제]</div>
+  <div class="cover-sub">[보고서 한 줄 설명]</div>
+  <div class="cover-meta">
+    <div class="cover-meta-item"><div class="cover-meta-label">발행일</div><div class="cover-meta-val">[YYYY년 MM월]</div></div>
+    <div class="cover-meta-item"><div class="cover-meta-label">데이터 기간</div><div class="cover-meta-val">[시작] — [종료]</div></div>
+    <div class="cover-meta-item"><div class="cover-meta-label">데이터 출처</div><div class="cover-meta-val">모바일인덱스 INSIGHT</div></div>
+    <div class="cover-meta-item"><div class="cover-meta-label">분석 대상</div><div class="cover-meta-val">[대상 설명]</div></div>
+  </div>
+</div>
+
+<div class="body">
+
+<!-- ══════════════════════════════════════════════
+     SECTION: KPI 카드
+     ══════════════════════════════════════════════ -->
+<div class="section">
+  <div class="section-label">Section 01</div>
+  <div class="section-title">[섹션 제목]</div>
+  <div class="divider"></div>
+
+  <!-- KPI 카드 — 개수 자유롭게 조절 (grid auto-fit) -->
+  <div class="kpi-grid">
+    <div class="kpi-card" style="--kpi-color: var(--c1);">
+      <style>.kpi-card[style*="--c1"]::before { background: var(--c1); }</style>
+      <div class="kpi-label">[항목명]</div>
+      <div class="kpi-val">[수치]</div>
+      <div class="kpi-sub up">↑ [변화율]</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">[항목명]</div>
+      <div class="kpi-val">[수치]</div>
+      <div class="kpi-sub down">↓ [변화율]</div>
+    </div>
+  </div>
+  <div class="kpi-note">[보충 설명 또는 주의사항]</div>
+
+  <!-- 차트 — Chart.js canvas -->
+  <br>
+  <div class="chart-wrap">
+    <div class="chart-label">[차트 제목]</div>
+    <div class="chart-legend">
+      <span class="legend-item"><span class="legend-dot" style="background:var(--c1);"></span>[범례1]</span>
+      <span class="legend-item"><span class="legend-dot" style="background:var(--c2);"></span>[범례2]</span>
+    </div>
+    <div style="position:relative;height:220px;">
+      <canvas id="chart1">[차트 설명]</canvas>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     SECTION: 사례 카드
+     ══════════════════════════════════════════════ -->
+<div class="section">
+  <div class="section-label">Section 02</div>
+  <div class="section-title">[섹션 제목]</div>
+  <div class="divider"></div>
+  <div class="case-grid">
+    <div class="case-card">
+      <div class="case-header">
+        <span class="case-badge" style="background:var(--c1-light);color:var(--c1);">[라벨]</span>
+        <span class="case-name">[사례명]</span>
+      </div>
+      <div class="case-body">
+        <div class="case-uplift">[핵심 수치]</div>
+        <div class="case-desc">[사례 설명]</div>
+      </div>
+    </div>
+    <!-- 카드 복제하여 추가 -->
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     SECTION: 인구통계 / 바 차트
+     ══════════════════════════════════════════════ -->
+<div class="section">
+  <div class="section-label">Section 03</div>
+  <div class="section-title">[섹션 제목]</div>
+  <div class="divider"></div>
+  <div class="demo-grid">
+    <div class="demo-card">
+      <div class="demo-title" style="color:var(--c1);">[카드 제목]</div>
+      <div class="bar-row">
+        <span class="bar-label">[항목]</span>
+        <div class="bar-track"><div class="bar-fill" style="width:80%;background:var(--c1);"></div></div>
+        <span class="bar-val">[값]</span>
+      </div>
+      <!-- bar-row 복제하여 추가 -->
+      <div class="demo-note">[요약 코멘트]</div>
+    </div>
+    <!-- demo-card 복제하여 추가 -->
+  </div>
+  <div class="insight-row">
+    <div class="insight-card">
+      <div class="insight-label">[지표명]</div>
+      <div class="insight-val">[수치]</div>
+      <div class="insight-sub up">[비교 설명]</div>
+    </div>
+    <!-- insight-card 복제하여 추가 -->
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     SECTION: 비교 테이블
+     ══════════════════════════════════════════════ -->
+<div class="section">
+  <div class="section-label">Section 04</div>
+  <div class="section-title">[섹션 제목]</div>
+  <div class="divider"></div>
+  <table class="comp-table">
+    <thead><tr><th>[열1]</th><th>[열2]</th><th>[열3]</th><th>[열4]</th></tr></thead>
+    <tbody>
+      <tr><td>[값]</td><td>[값]</td><td>[값]</td><td><span class="pill" style="background:var(--c2-light);color:var(--c2);">[라벨]</span></td></tr>
+      <!-- tr 복제하여 추가 -->
+    </tbody>
+  </table>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     SECTION: 전략 제언
+     ══════════════════════════════════════════════ -->
+<div class="section">
+  <div class="section-label">Section 05</div>
+  <div class="section-title">[섹션 제목]</div>
+  <div class="divider"></div>
+  <div class="strategy-grid">
+    <div class="strategy-card" data-num="01">
+      <div class="strategy-accent" style="background:var(--c1);"></div>
+      <div class="strategy-name">[전략명]</div>
+      <div class="strategy-desc">[전략 설명]</div>
+    </div>
+    <!-- strategy-card 복제하여 추가 -->
+  </div>
+</div>
+
+</div><!-- /body -->
+
+<!-- ══════════════════════════════════════════════
+     FOOTER
+     ══════════════════════════════════════════════ -->
+<div class="footer">
+  <div class="footer-left">본 보고서는 모바일인덱스 INSIGHT 데이터를 기반으로 작성되었습니다.</div>
+</div>
+
+</div><!-- /page -->
+
+<!-- ══════════════════════════════════════════════
+     CHART.JS — 아래에 차트 데이터 작성
+     ══════════════════════════════════════════════ -->
+<script>
+// 예시: 라인 차트
+// new Chart(document.getElementById('chart1'), {
+//   type: 'line',
+//   data: { labels: [...], datasets: [{ label: '...', data: [...], borderColor: 'var(--c1)', ... }] },
+//   options: { responsive: true, maintainAspectRatio: false, ... }
+// });
+</script>
+</body>
+</html>

@@ -1,0 +1,37 @@
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css');
+@import url('https://cdn.jsdelivr.net/gh/toss/tossface/dist/tossface.css');
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#fff;--text-primary:#191f28;--text-secondary:#4e5968;--text-tertiary:#8b95a1;--accent:#3182f6;--accent-light:#e8f3ff;--border:#e5e8eb;--highlight-bg:#f8f9fa;--orange:#f59e0b;--orange-light:#fef3c7}
+html{font-size:16px;-webkit-font-smoothing:antialiased}
+body{font-family:'Pretendard Variable',Pretendard,Tossface,-apple-system,BlinkMacSystemFont,system-ui,sans-serif;color:var(--text-primary);background:var(--bg);line-height:1.6;word-break:keep-all}
+
+/* ─── 로그인 ─── */
+.login-screen{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;background:var(--highlight-bg)}
+.login-box{text-align:center;max-width:420px;padding:0 24px}
+.login-emoji{font-size:3rem;margin-bottom:20px}
+.login-logo{font-size:1.375rem;font-weight:800;color:var(--text-primary);margin-bottom:8px;letter-spacing:-.03em}
+.login-sub{font-size:.9375rem;color:var(--text-tertiary);margin-bottom:48px}
+.login-btn{display:inline-flex;align-items:center;gap:10px;padding:14px 36px;background:var(--bg);border:1px solid var(--border);border-radius:12px;font-family:inherit;font-size:.9375rem;font-weight:600;color:var(--text-primary);cursor:pointer;transition:all .2s;box-shadow:0 1px 3px rgba(0,0,0,.04)}
+.login-btn:hover{background:var(--bg);border-color:var(--text-tertiary);box-shadow:0 2px 8px rgba(0,0,0,.08)}
+.login-btn img{width:18px;height:18px}
+.login-notice{margin-top:28px;font-size:.75rem;color:var(--text-tertiary)}
+.login-error{margin-top:16px;font-size:.8125rem;color:#e8484a;display:none}
+
+/* ─── 상단 바 ─── */
+.topbar{position:sticky;top:0;z-index:100;background:var(--bg);border-bottom:1px solid var(--border);padding:0 32px;display:flex;align-items:center;justify-content:space-between;height:52px}
+.topbar-left{display:flex;align-items:center}
+.topbar-nav{display:flex;align-items:stretch;gap:4px;height:100%}
+.topbar-nav a,.nav-disabled{font-size:.8125rem;font-weight:500;color:var(--text-tertiary);padding:0 14px;text-decoration:none;transition:color .15s;white-space:nowrap;display:inline-flex;align-items:center;border-bottom:none}
+.topbar-nav a:hover{color:var(--text-secondary)}
+.topbar-nav a.active{color:var(--text-primary);font-weight:700}
+.nav-disabled{opacity:.65;cursor:default;user-select:none;gap:6px;border-bottom:2px solid transparent!important}
+.nav-badge{display:inline-block;font-size:.5625rem;font-weight:700;color:var(--orange);background:var(--orange-light);padding:2px 8px;border-radius:100px;line-height:1.3;letter-spacing:.01em}
+.topbar-right{display:flex;align-items:center;gap:12px}
+.topbar-user{font-size:.75rem;color:var(--text-tertiary)}
+.topbar-logout{font-size:.6875rem;color:var(--text-tertiary);cursor:pointer;padding:5px 12px;border:1px solid var(--border);border-radius:6px;background:none;font-family:inherit;transition:all .15s}
+.topbar-logout:hover{color:var(--text-secondary);border-color:var(--text-tertiary)}
+
+/* ─── 콘텐츠 ─── */
+#app{display:none}
+#login{display:none}
+#loading{display:flex;align-items:center;justify-content:center;min-height:100vh;font-size:.9375rem;color:var(--text-tertiary)}

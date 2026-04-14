@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OTT 경쟁사 분석 & TVING 전략 보고서</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+:root {
+  --accent: #3182f6;
+  --accent-light: #e8f3ff;
+  --text-primary: #191f28;
+  --text-secondary: #4e5968;
+  --text-tertiary: #8b95a1;
+  --border: #e5e8eb;
+  --highlight-bg: #f8f9fa;
+  --bg: #ffffff;
+  --red: #E8484A; --red-light: #FDEAEA;
+  --blue: #2B7FE0; --blue-light: #E8F1FD;
+  --green: #10a37f; --green-light: #E6F7F2;
+  --amber: #C47F0D; --amber-light: #FEF5E4;
+  --purple: #6C63FF; --purple-light: #EEEDff;
+  --gray: #8b95a1;
+  --tving: #FF4B4B;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+  background: var(--bg); color: var(--text-primary); font-size: 14px; line-height: 1.8;
+  word-break: keep-all; -webkit-font-smoothing: antialiased;
+}
+.page { width: 100%; max-width: 794px; margin: 0 auto; background: var(--bg); }
+
+/* ── Cover ── */
+.cover { background: var(--text-primary); padding: 60px 56px 52px; position: relative; overflow: hidden; }
+.cover::before { content: ''; position: absolute; top: -80px; right: -60px; width: 320px; height: 320px; border-radius: 50%; background: radial-gradient(circle, rgba(255,75,75,0.25) 0%, transparent 70%); }
+.cover-eyebrow { font-size: 0.75rem; font-weight: 600; color: rgba(255,255,255,0.4); letter-spacing: 0.08em; margin-bottom: 20px; }
+.cover-title { font-size: 2rem; font-weight: 800; line-height: 1.25; color: #fff; margin-bottom: 10px; position: relative; z-index: 1; letter-spacing: -0.03em; }
+.cover-title span { color: var(--tving); }
+.cover-sub { font-size: 0.9375rem; color: rgba(255,255,255,0.5); margin-bottom: 48px; position: relative; z-index: 1; }
+.cover-meta { display: flex; gap: 32px; position: relative; z-index: 1; }
+.cover-meta-item { border-left: 2px solid rgba(255,255,255,0.12); padding-left: 16px; }
+.cover-meta-label { font-size: 0.625rem; color: rgba(255,255,255,0.3); letter-spacing: 0.06em; margin-bottom: 4px; }
+.cover-meta-val { font-size: 0.8125rem; color: rgba(255,255,255,0.65); font-weight: 500; }
+
+/* ── Body ── */
+.body { padding: 48px 56px; }
+.section { margin-bottom: 44px; }
+.section-label { font-size: 0.6875rem; font-weight: 700; color: var(--tving); letter-spacing: 0.08em; margin-bottom: 6px; }
+.section-title { font-size: 1.25rem; font-weight: 800; color: var(--text-primary); margin-bottom: 20px; line-height: 1.3; letter-spacing: -0.02em; }
+.divider { height: 1px; background: var(--border); margin-bottom: 20px; }
+
+/* ── KPI ── */
+.kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 10px; }
+.kpi-card { background: var(--highlight-bg); padding: 16px 14px; position: relative; overflow: hidden; }
+.kpi-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; }
+.kpi-card.netflix::before { background: var(--red); }
+.kpi-card.coupang::before { background: #C73434; }
+.kpi-card.tving::before { background: var(--tving); }
+.kpi-card.wavve::before { background: var(--blue); }
+.kpi-label { font-size: 0.6875rem; color: var(--text-tertiary); margin-bottom: 6px; font-weight: 500; }
+.kpi-val { font-size: 1.25rem; font-weight: 700; color: var(--text-primary); line-height: 1; margin-bottom: 6px; }
+.kpi-sub { font-size: 0.6875rem; font-weight: 600; }
+.up { color: var(--green); } .down { color: var(--red); } .flat { color: var(--text-tertiary); }
+.kpi-note { font-size: 0.6875rem; color: var(--text-tertiary); background: var(--highlight-bg); border-left: 3px solid var(--border); padding: 8px 12px; margin-top: 8px; }
+
+/* ── Chart ── */
+.chart-wrap { background: var(--bg); border: 1px solid var(--border); padding: 20px 20px 12px; margin-bottom: 12px; }
+.chart-legend { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 14px; font-size: 0.6875rem; color: var(--text-secondary); }
+.legend-item { display: flex; align-items: center; gap: 6px; }
+.legend-dot { width: 28px; height: 3px; flex-shrink: 0; }
+.legend-dot.dashed { background: repeating-linear-gradient(to right, var(--gray) 0, var(--gray) 4px, transparent 4px, transparent 8px); }
+
+/* ── Cases ── */
+.case-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.case-card { border: 1px solid var(--border); overflow: hidden; }
+.case-header { padding: 12px 16px 10px; display: flex; align-items: center; gap: 10px; }
+.case-badge { font-size: 0.625rem; font-weight: 700; letter-spacing: 0.04em; padding: 3px 9px; }
+.badge-netflix { background: var(--red-light); color: var(--red); }
+.badge-coupang { background: #fce8e8; color: #C73434; }
+.badge-tving { background: #ffebeb; color: var(--tving); }
+.badge-wavve { background: var(--blue-light); color: var(--blue); }
+.case-name { font-size: 0.8125rem; font-weight: 700; color: var(--text-primary); }
+.case-body { padding: 0 16px 14px; }
+.case-uplift { font-size: 1.5rem; font-weight: 900; line-height: 1; margin-bottom: 6px; }
+.case-uplift.up { color: var(--green); }
+.case-uplift.down { color: var(--red); }
+.case-desc { font-size: 0.75rem; color: var(--text-secondary); line-height: 1.65; }
+
+/* ── Table ── */
+.comp-table { width: 100%; border-collapse: collapse; font-size: 0.75rem; margin-top: 4px; }
+.comp-table th { background: var(--text-primary); color: white; padding: 10px 14px; text-align: left; font-weight: 600; font-size: 0.6875rem; letter-spacing: 0.04em; }
+.comp-table td { padding: 10px 14px; border-bottom: 1px solid var(--border); vertical-align: middle; color: var(--text-secondary); }
+.comp-table tr:last-child td { border-bottom: none; }
+.comp-table tr:nth-child(even) td { background: var(--highlight-bg); }
+.pill { display: inline-block; font-size: 0.625rem; font-weight: 700; padding: 2px 8px; border-radius: 4px; }
+
+/* ── Strategy ── */
+.strategy-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.strategy-card { border: 1px solid var(--border); padding: 18px 18px 16px; position: relative; overflow: hidden; }
+.strategy-card::after { content: attr(data-num); position: absolute; right: 14px; top: 10px; font-size: 2.5rem; font-weight: 800; color: rgba(0,0,0,0.03); line-height: 1; }
+.strategy-accent { width: 28px; height: 3px; margin-bottom: 10px; }
+.strategy-name { font-size: 0.875rem; font-weight: 700; color: var(--text-primary); margin-bottom: 7px; }
+.strategy-desc { font-size: 0.75rem; color: var(--text-secondary); line-height: 1.65; }
+
+/* ── Footer ── */
+.footer { background: var(--text-primary); padding: 22px 56px; }
+.footer-left { font-size: 0.6875rem; color: rgba(255,255,255,0.35); }
+</style>
+</head>
+<body>
+<div class="page">
+<!-- COVER -->
+<div class="cover">
+<div class="cover-eyebrow">모바일인덱스 데이터 기반 리포트</div>
+<div class="cover-title">OTT<span> 경쟁사 분석</span><br>& TVING 전략</div>
+<div class="cover-sub">국내 OTT 시장 경쟁 현황과 TVING 마케팅 전략 제언</div>
+<div class="cover-meta">
+<div class="cover-meta-item"><div class="cover-meta-label">발행일</div><div class="cover-meta-val">2025년 4월</div></div>
+<div class="cover-meta-item"><div class="cover-meta-label">데이터 기간</div><div class="cover-meta-val">2024.01 — 2025.03</div></div>
+<div class="cover-meta-item"><div class="cover-meta-label">데이터 출처</div><div class="cover-meta-val">모바일인덱스 INSIGHT</div></div>
+<div class="cover-meta-item"><div class="cover-meta-label">분석 대상</div><div class="cover-meta-val">4개 주요 OTT 앱</div></div>
+</div>
+</div>
+<div class="body">
+<!-- SECTION 1 -->
+<div class="section">
+<div class="section-label">Section 01</div>
+<div class="section-title">MAU 현황 (2025년 3월 기준)</div>
+<div class="divider"></div>
+<div class="kpi-grid">
+<div class="kpi-card netflix"><div class="kpi-label">Netflix</div><div class="kpi-val">1,409만</div><div class="kpi-sub up">↑ YoY +10.1%</div></div>
+<div class="kpi-card coupang"><div class="kpi-label">쿠팡플레이</div><div class="kpi-val">748만</div><div class="kpi-sub down">↓ 2024.01 대비 -4.1%</div></div>
+<div class="kpi-card tving"><div class="kpi-label">TVING</div><div class="kpi-val">705만</div><div class="kpi-sub down">↓ 최고점 대비 -12.9%</div></div>
+<div class="kpi-card wavve"><div class="kpi-label">Wavve</div><div class="kpi-val">426만</div><div class="kpi-sub flat">→ 정체 구간 지속</div></div>
+</div>
+<div class="kpi-note">⚠ TVING은 2024년 10월 최고점(809만) 이후 하락세. 쿠팡플레이는 스포츠 비시즌 이탈이 뚜렷함.</div>
+<br>
+<div class="chart-wrap">
+<div class="chart-legend">
+<span class="legend-item"><span class="legend-dot" style="background:#E8484A;"></span>Netflix</span>
+<span class="legend-item"><span class="legend-dot" style="background:#C73434;"></span>쿠팡플레이</span>
+<span class="legend-item"><span class="legend-dot" style="background:#FF4B4B;"></span>TVING</span>
+<span class="legend-item"><span class="legend-dot" style="background:#2B7FE0;"></span>Wavve</span>
+</div>
+<div style="position:relative;height:220px;"><canvas id="trendChart">OTT 월간 사용자 수 추이</canvas></div>
+</div>
+</div>
+<!-- SECTION 2 -->
+<div class="section">
+<div class="section-label">Section 02</div>
+<div class="section-title">경쟁사 유입 급등 시점 — 핵심 원인 분석</div>
+<div class="divider"></div>
+<div class="case-grid">
+<div class="case-card"><div class="case-header"><span class="case-badge badge-netflix">Netflix</span><span class="case-name">오징어게임 시즌2</span></div><div class="case-body"><div class="case-uplift up">+5.6% MoM</div><div class="case-desc">2024년 12월 공개 직후 MAU 1,299만→1,371만 급등. 글로벌 K-IP가 국내 트래픽도 직접 견인.</div></div></div>
+<div class="case-card"><div class="case-header"><span class="case-badge badge-coupang">쿠팡플레이</span><span class="case-name">EPL 독점 중계권</span></div><div class="case-body"><div class="case-uplift up">설치 968K 최고</div><div class="case-desc">2024년 1월 신규설치 968천 건으로 전체 기간 압도적 1위. 그러나 비시즌 급격한 이탈.</div></div></div>
+<div class="case-card"><div class="case-header"><span class="case-badge badge-tving">TVING</span><span class="case-name">2024년 상반기 성장</span></div><div class="case-body"><div class="case-uplift up">+23% 상반기</div><div class="case-desc">2024년 1월~10월 지속 성장(656만→809만). tvN 드라마와 KBO 야구 중계 효과.</div></div></div>
+<div class="case-card"><div class="case-header"><span class="case-badge badge-tving">TVING</span><span class="case-name">2024년 11월~ 급락</span></div><div class="case-body"><div class="case-uplift down">-12.9% 급락</div><div class="case-desc">809만→705만 하락. KBO 시즌 종료와 하반기 드라마 라인업 공백이 겹침.</div></div></div>
+</div>
+</div>
+<!-- SECTION 3 -->
+<div class="section">
+<div class="section-label">Section 03</div>
+<div class="section-title">경쟁사 포지션 요약</div>
+<div class="divider"></div>
+<table class="comp-table">
+<thead><tr><th>서비스</th><th>MAU 트렌드</th><th>유입 핵심 동인</th><th>리텐션 위협</th><th>TVING 기회</th></tr></thead>
+<tbody>
+<tr><td><strong style="color:var(--red);">넷플릭스</strong></td><td>지속 성장 ↑</td><td>글로벌 K-IP, 오리지널 지속 투자</td><td>가격 인상 저항</td><td>비용 절감 이탈층 흡수</td></tr>
+<tr><td><strong style="color:#C73434;">쿠팡플레이</strong></td><td>정체·하락 ↓</td><td>EPL 독점 중계, 멤버십 번들</td><td>스포츠 비시즌 급격한 이탈</td><td>축구 비시즌 이탈 유저 타깃</td></tr>
+<tr><td><strong style="color:var(--blue);">Wavve</strong></td><td>장기 정체 →</td><td>지상파 콘텐츠, 뉴스·시사</td><td>MZ 세대 이탈</td><td>젊은 층 이탈 유저 흡수</td></tr>
+<tr><td><strong style="color:var(--tving);">TVING</strong></td><td>성장 후 조정 ↘</td><td>tvN 드라마, KBO 야구 중계</td><td>콘텐츠 공백기 이탈</td><td>IP 강화 + 비수기 방어 필요</td></tr>
+</tbody>
+</table>
+</div>
+<!-- SECTION 4 -->
+<div class="section">
+<div class="section-label">Section 04</div>
+<div class="section-title">TVING 마케팅 전략 제안</div>
+<div class="divider"></div>
+<div class="strategy-grid">
+<div class="strategy-card" data-num="01"><div class="strategy-accent" style="background:var(--tving);"></div><div class="strategy-name">콘텐츠 캘린더 사전 마케팅</div><div class="strategy-desc">분기별 "무조건 봐야 할 콘텐츠"를 D-30부터 티저·SNS 캠페인으로 기대감 증폭.</div></div>
+<div class="strategy-card" data-num="02"><div class="strategy-accent" style="background:var(--blue);"></div><div class="strategy-name">스포츠 + 드라마 이중 방어선</div><div class="strategy-desc">스포츠 단일 의존 시 비시즌 이탈 치명적. 야구·축구 시즌과 오리지널 드라마 방영을 교차 배치.</div></div>
+<div class="strategy-card" data-num="03"><div class="strategy-accent" style="background:var(--amber);"></div><div class="strategy-name">11월~2월 겨울 방어 패키지</div><div class="strategy-desc">MAU 급락은 11월부터 반복되는 계절적 패턴. 동기간 할인 구독 패키지 + 신작 집중 공개.</div></div>
+<div class="strategy-card" data-num="04"><div class="strategy-accent" style="background:var(--red);"></div><div class="strategy-name">K-콘텐츠 글로벌 역수입 마케팅</div><div class="strategy-desc">넷플릭스 K-IP 성공이 국내 유입으로 역류하는 현상 활용. "해외에서 난리난 그 드라마" 포지셔닝.</div></div>
+<div class="strategy-card" data-num="05"><div class="strategy-accent" style="background:var(--green);"></div><div class="strategy-name">Wavve 이탈층 집중 흡수</div><div class="strategy-desc">Wavve는 MAU 426만으로 정체 + 하락세. 유사 유저군 대상 전환 프로모션(첫 3개월 50% 할인 등).</div></div>
+<div class="strategy-card" data-num="06"><div class="strategy-accent" style="background:var(--text-tertiary);"></div><div class="strategy-name">설치→구독 전환 퍼널 강화</div><div class="strategy-desc">쿠팡플레이는 설치 1위에도 MAU 하락 — 전환율이 핵심. 앱 첫 실행 온보딩 UX 개선 + 무료체험 리마인드.</div></div>
+</div>
+</div>
+</div><!-- /body -->
+<div class="footer">
+<div class="footer-left">본 보고서는 모바일인덱스 INSIGHT 데이터(2024.01~2025.03)를 기반으로 작성되었습니다.</div>
+</div>
+</div><!-- /page -->
+<script>
+const labels=['24.01','24.02','24.03','24.04','24.05','24.06','24.07','24.08','24.09','24.10','24.11','24.12','25.01','25.02','25.03'];
+const netflix=[12819,12520,11727,11292,11184,10960,11228,11211,11667,11910,11600,12988,13710,13452,14094];
+const coupang=[7785,7746,7798,7028,6544,6629,6164,6849,6793,7064,6326,7086,6853,6843,7482];
+const tving=[6564,6614,6909,7063,7313,7400,7645,7833,7867,8096,7305,7254,7336,6792,7055];
+const wavve=[4416,4255,4260,4087,4252,4324,4435,4408,4273,4207,4249,4368,4293,4184,4261];
+new Chart(document.getElementById('trendChart'),{type:'line',data:{labels,datasets:[
+{label:'Netflix',data:netflix,borderColor:'#E8484A',backgroundColor:'transparent',borderWidth:2,pointRadius:0,tension:.35},
+{label:'쿠팡플레이',data:coupang,borderColor:'#C73434',backgroundColor:'transparent',borderWidth:2,pointRadius:0,tension:.35},
+{label:'TVING',data:tving,borderColor:'#FF4B4B',backgroundColor:'rgba(255,75,75,0.06)',fill:true,borderWidth:2.5,pointRadius:0,tension:.35},
+{label:'Wavve',data:wavve,borderColor:'#2B7FE0',backgroundColor:'transparent',borderWidth:1.5,pointRadius:0,tension:.35}
+]},options:{responsive:true,maintainAspectRatio:false,interaction:{intersect:false,mode:'index'},
+plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.dataset.label+': '+c.parsed.y.toLocaleString()+'만'}}},
+scales:{x:{ticks:{font:{size:10},color:'#8b95a1',maxRotation:0,autoSkip:true,maxTicksLimit:8},grid:{display:false},border:{display:false}},
+y:{ticks:{font:{size:10},color:'#8b95a1',callback:v=>v.toLocaleString()+'만'},grid:{color:'#f0f0f0'},border:{display:false}}}}});
+</script>
+</body>
+</html>

@@ -1,0 +1,17 @@
+{
+  "enabled": true,
+  "name": "사업기획서 HTML↔MD 동기화",
+  "description": "01_MCP_사업기획서.html 또는 01_MCP_사업기획서.md 파일이 수정되면, 변경 내용을 다른 파일에도 반영합니다.",
+  "version": "1",
+  "when": {
+    "type": "fileEdited",
+    "patterns": [
+      "plan/기획/01_MCP_사업기획서.html",
+      "plan/기획/01_MCP_사업기획서.md"
+    ]
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "방금 수정된 파일을 확인하고, 변경된 내용을 짝이 되는 파일에 반영해주세요.\n\n- HTML이 수정되었으면 → MD 파일에 해당 내용 반영\n- MD가 수정되었으면 → HTML 파일에 해당 내용 반영\n\n변경된 부분만 정확히 파악해서 동기화해주세요. 전체를 다시 작성하지 말고, 수정된 섹션만 업데이트하세요."
+  }
+}

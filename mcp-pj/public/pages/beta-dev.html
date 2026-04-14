@@ -1,0 +1,360 @@
+<link rel="stylesheet" href="/css/beta-dev.css?v=2">
+<!-- HERO -->
+<div class="hero">
+<div class="hero-label">MCP BETA 개발안</div>
+<h1>🗂️ 모바일인덱스 MCP 상품 — BETA 개발안</h1>
+<p class="hero-sub">BETA 개발 → 아이지에이웍스 내부 테스트 → 피드백 반영 및 사업화</p>
+</div>
+
+<!-- 1. 개요 -->
+<div class="section"><div class="container">
+<div class="section-num">1. 개요</div>
+
+<h3>1-1. 테스트 현황</h3>
+<blockquote><p>💡 사용하는 LLM 및 에이전트에 따라 답변 표현이 다를 수 있으나, 데이터 조회 결과 자체는 동일하며 큰 차이는 없을 것으로 예상</p></blockquote>
+<div class="table-wrap">
+<table>
+<thead><tr><th>AI 플랫폼</th><th class="tc">연결 결과</th><th class="tc">BETA 출시</th><th>설명</th></tr></thead>
+<tbody>
+<tr><td><strong>Kiro</strong></td><td class="tc">🟢 성공</td><td class="tc">✅ 대상</td><td>AWS AI IDE, MCP 네이티브 지원</td></tr>
+<tr><td><strong>Claude Desktop</strong></td><td class="tc">🟢 성공</td><td class="tc">✅&nbsp;대상</td><td>Anthropic 데스크탑 앱, MCP 최초 개발사</td></tr>
+<tr><td><strong>ChatGPT</strong></td><td class="tc">⚪ 대기</td><td class="tc">❌ 비대상</td><td>원격 서버 배포 후 테스트 예정, Pro 이상 플랜 필요</td></tr>
+<tr><td><strong>Gemini</strong></td><td class="tc">—</td><td class="tc">❌&nbsp;비대상</td><td>CLI(개발자 터미널) 환경에서만 MCP 지원, 일반 웹/앱 미지원</td></tr>
+<tr><td><strong>Cursor</strong></td><td class="tc">🟢 성공</td><td class="tc">❌&nbsp;비대상</td><td>원격 서버 배포 후 테스트 예정, AI 코드 에디터</td></tr>
+<tr><td><strong>Windsurf</strong></td><td class="tc">🟢 성공</td><td class="tc">❌&nbsp;비대상</td><td>원격 서버 배포 후 테스트 예정, AI 코드 에디터</td></tr>
+</tbody>
+</table>
+</div>
+
+<h3>1-2. 목표</h3>
+<ul>
+<li>모바일인덱스 MCP 서버 원격 배포, 가이드에 따라 <strong>API 키 + 서버 URL</strong>만 입력하면 AI에서 모바일인덱스 데이터를 자연어로 조회</li>
+<li>내부 프로토타입 테스트를 통해 실제 사용 패턴 확보 및 개선점 도출</li>
+<li>테스트 결과를 바탕으로 MCP 서비스의 <strong>목적 및 방향성, 정식 출시 진행 여부</strong>를 판단</li>
+</ul>
+
+<h3>1-3. 운영 계획</h3>
+<div class="table-wrap">
+<table>
+<thead><tr><th style="width:18%">항목</th><th>내용</th></tr></thead>
+<tbody>
+<tr><td><strong>대상</strong></td><td>아이지에이웍스 내부 필요 부서 (마케팅팀, AM팀 등, 외부 고객사는 대상 ❌)<br></td></tr>
+<tr><td><strong>제공 범위</strong></td><td>MCP 서버 전체 27개 도구 (모바일인덱스 INSIGHT API 전체 기능) + <strong>Small DMP*</strong> DB 연동<br>지원 AI 플랫폼: <span class="chip">Kiro</span><span class="chip">Claude Desktop</span></td></tr>
+<tr><td><strong>피드백 수집</strong></td><td>사용 패턴 (어떤 도구를 많이 쓰는지)을 포함한 불편 사항, 개선 요청 외 전반적인 피드백</td></tr>
+</tbody>
+</table>
+</div>
+<blockquote><p><strong>Small DMP란?</strong><br>전사 앱 데이터에서 표본을 추출하여 경량화한 DB입니다.<br>부담이 적은 규모로 구성하여 사용자가 AI(LLM)를 통해 자연어로 원하는 쿼리를 직접 입력하고 결과를 받을 수 있도록 합니다.</p></blockquote>
+
+<h3>1-4. 사용자 경험</h3>
+<div class="table-wrap">
+<table>
+<thead><tr><th style="width:3%">순서</th><th>내용</th></tr></thead>
+<tbody>
+<tr><td class="tc"><strong>1️⃣</strong></td><td>사용자가 개인 API 키를 이메일로 수령</td></tr>
+<tr><td class="tc"><strong>2️⃣</strong></td><td>연동 가이드 페이지 접속</td></tr>
+<tr><td class="tc"><strong>3️⃣</strong></td><td>사용 중인 AI 플랫폼(Claude, ChatGPT 등)의 MCP 설정에 서버 URL + API 키 입력</td></tr>
+<tr><td class="tc"><strong>4️⃣</strong></td><td>연결 완료 → AI에게 "카카오톡 MAU 알려줘" 같은 자연어 질문으로 데이터 조회</td></tr>
+</tbody>
+</table>
+</div>
+
+<h3>1-5. 향후 확장 방향</h3>
+<blockquote><p>💡 MCP 상품은 <strong>두 가지 데이터 소스</strong>로 개발해야 합니다. 빠르게 출시할 수 있는 API 기반부터 먼저 진행합니다.</p></blockquote>
+<div class="compare-grid" style="grid-template-columns:1fr 1fr">
+<div class="compare-card primary">
+<div class="compare-label">Insight API 기반 MCP</div>
+<div class="compare-title">기존 API로 바로 개발 가능</div>
+<ul class="compare-list">
+<li>이미 존재하는 Insight API 27개를 MCP 도구로 변환</li>
+<li>모바일인덱스에서 볼 수 있는 데이터와 동일</li>
+<li>기획 측 개발 완료, 서버 배포만 남음</li>
+</ul>
+</div>
+<div class="compare-card secondary">
+<div class="compare-label">Small DMP 기반 MCP &nbsp;<span class="tag tag-wait">개발 검토 필요</span></div>
+<div class="compare-title">모바일인덱스에서 볼 수 없는 데이터</div>
+<ul class="compare-list">
+<li>Small DMP를 만들어 DB 직접 연동</li>
+<li>교차 사용자 수 추출 등 심화 분석 가능</li>
+<li>DMP 구축 일정 협의 필요 (DMP 팀)</li>
+</ul>
+</div>
+</div>
+<blockquote><p>💡 BETA는 <strong>Kiro + Claude</strong> 위주로 진행하되, 이후 플랫폼별 최적화도 필요합니다.</p></blockquote>
+<div class="table-wrap">
+<table>
+<thead><tr><th>플랫폼</th><th>BETA</th><th>이후 확장</th></tr></thead>
+<tbody>
+<tr><td><strong>Kiro</strong></td><td>MCP 서버 연결 (현재 방식)</td><td>—</td></tr>
+<tr><td><strong>Claude</strong></td><td>MCP 서버 연결 (현재 방식)</td><td><strong>Claude 커넥터로 개발</strong> — 마켓플레이스 등록, 자연 유입</td></tr>
+<tr><td><strong>ChatGPT</strong></td><td>BETA 미포함</td><td><strong>GPT 앱(Actions)으로 별도 개발</strong> — 링크 클릭만으로 사용 가능</td></tr>
+<tr><td><strong>Cursor / Windsurf</strong></td><td>BETA 미포함</td><td>MCP 서버 연결 (추후 가이드 추가)</td></tr>
+</tbody>
+</table>
+</div>
+</div></div>
+
+
+<!-- 2. 개발 필요 항목 -->
+<div class="section"><div class="container">
+<div class="section-num">2. 개발 필요 항목</div>
+
+<div class="steps">
+<div class="step-card done">
+<div class="step-icon">✓</div>
+<div class="step-body">
+<div class="step-title">MCP 서버 코드 작성</div>
+<div class="step-desc">모바일인덱스 API 27개를 AI가 쓸 수 있는 도구로 만드는 작업</div>
+</div>
+<div class="step-tag"><span class="tag tag-done">완료</span></div>
+</div>
+<div class="step-arrow">↓</div>
+<div class="step-card done">
+<div class="step-icon">✓</div>
+<div class="step-body">
+<div class="step-title">서버 통신 방식 변환 (stdio → SSE)</div>
+<div class="step-desc">로컬 → 인터넷으로 접속 가능하게 바꾸는 작업</div>
+</div>
+<div class="step-tag"><span class="tag tag-done">완료</span></div>
+</div>
+<div class="step-arrow">↓</div>
+<div class="step-card done">
+<div class="step-icon">✓</div>
+<div class="step-body">
+<div class="step-title">API 키 인증 코드</div>
+<div class="step-desc">허가된 사용자만 접속할 수 있도록 키를 확인하는 코드</div>
+</div>
+<div class="step-tag"><span class="tag tag-done">완료</span></div>
+</div>
+<div class="step-arrow">↓</div>
+<div class="step-card done">
+<div class="step-icon">✓</div>
+<div class="step-body">
+<div class="step-title">연동 가이드 웹페이지</div>
+<div class="step-desc">사용자가 보고 따라할 수 있는 설정 가이드</div>
+</div>
+<div class="step-tag"><span class="tag tag-done">완료</span></div>
+</div>
+<div class="step-arrow">↓</div>
+<div class="step-card done">
+<div class="step-icon">✓</div>
+<div class="step-body">
+<div class="step-title">가이드 페이지 배포</div>
+<div class="step-desc">🔗 <a href="https://mobileindex-mcp.web.app/guide/" target="_blank">https://mobileindex-mcp.web.app/guide/</a></div>
+</div>
+<div class="step-tag"><span class="tag tag-done">완료</span></div>
+</div>
+
+<div class="step-arrow">↓</div>
+
+<div class="step-card need">
+<div class="step-icon">!</div>
+<div class="step-body">
+<div class="step-title">서버 인프라 준비</div>
+<div class="step-desc">MCP 서버를 24시간 돌릴 클라우드 서버 세팅</div>
+</div>
+<div class="step-tag"><span class="tag tag-wait">개발 필요</span></div>
+</div>
+<div class="step-arrow">↓</div>
+<div class="step-card need">
+<div class="step-icon">!</div>
+<div class="step-body">
+<div class="step-title">도메인 + HTTPS</div>
+<div class="step-desc">mcp.mobileindex.com 같은 주소 만들고 보안 인증서 붙이기</div>
+</div>
+<div class="step-tag"><span class="tag tag-wait">개발 필요</span></div>
+</div>
+<div class="step-arrow">↓</div>
+<div class="step-card need">
+<div class="step-icon">!</div>
+<div class="step-body">
+<div class="step-title">환경변수 설정 + 서버 배포</div>
+<div class="step-desc">API 토큰, 허용 키 목록을 서버에 설정하고 실행</div>
+</div>
+<div class="step-tag"><span class="tag tag-wait">개발 필요</span></div>
+</div>
+</div>
+</div></div>
+
+<!-- 3. MCP 서버 현재 상태 -->
+<div class="section"><div class="container">
+<div class="section-num">3. MCP 서버 현재 상태</div>
+
+<h3>3-1. 현재 구현 완료 항목</h3>
+<div class="table-wrap">
+<table>
+<thead><tr><th style="width:14%">항목</th><th class="tc" style="width:60px">상태</th><th>설명</th></tr></thead>
+<tbody>
+<tr><td><strong>도구 27개</strong></td><td class="tc"><span class="tag tag-done">완료</span></td><td>모바일인덱스 API 엔드포인트 1:1 매핑 (앱 검색, 사용량, 경쟁사 비교, 이탈, 페르소나 등)</td></tr>
+<tr><td><strong>도구 이름/설명</strong></td><td class="tc"><span class="tag tag-done">완료</span></td><td>AI가 도구를 자동 선택할 수 있도록 한국어 설명 포함</td></tr>
+<tr><td><strong>파라미터 설계</strong></td><td class="tc"><span class="tag tag-done">완료</span></td><td>필수/선택 구분, 날짜 형식(yyyymmdd) 명시</td></tr>
+<tr><td><strong>API 키 인증</strong></td><td class="tc"><span class="tag tag-done">완료</span></td><td>Bearer 토큰 검증. 허용 키 목록 기반 (환경변수)</td></tr>
+<tr><td><strong>SSE 통신</strong></td><td class="tc"><span class="tag tag-done">완료</span></td><td>원격 접속 가능한 HTTP 서버 방식</td></tr>
+<tr><td><strong>헬스체크</strong></td><td class="tc"><span class="tag tag-done">완료</span></td><td><code>GET /health</code> 엔드포인트 내장</td></tr>
+<tr><td><strong>에러 처리</strong></td><td class="tc"><span class="tag tag-done">완료</span></td><td>API 에러, 인증 실패 시 에러 메시지 반환</td></tr>
+</tbody>
+</table>
+</div>
+
+<h3>3-2. 정식 출시 시 보완 필요 항목</h3>
+<blockquote>
+<p>💡 MCP 서버는 데이터를 전달하는 역할이기 때문에, <strong>MCP 서버에서 제어할 수 없는 영역 존재</strong></p>
+<p>💡 그 외 보완 가능한 항목은 정식 출시 버전에서 진행 예정</p>
+</blockquote>
+
+<p style="margin-bottom:8px"><strong>🔴 제어할 수 없는 영역</strong></p>
+<div class="tight">
+<div class="table-wrap">
+<table>
+<thead><tr><th>항목</th><th>설명</th></tr></thead>
+<tbody>
+<tr><td><strong>AI의 답변 톤/스타일</strong></td><td>AI가 데이터를 받은 후 어떻게 표현할지는 AI 플랫폼(Claude, ChatGPT 등)이 결정</td></tr>
+<tr><td><strong>할루시네이션</strong></td><td>데이터에 없는 내용을 AI가 추측하여 답변할 가능성, 출처 명시로 최소화하지만 완전 차단은 불가</td></tr>
+<tr><td><strong>AI 플랫폼 장애</strong></td><td>AI 플랫폼 자체의 장애/점검은 모바일인덱스에서 대응 불가</td></tr>
+<tr><td><strong>사용자의 질의 품질</strong></td><td>모호한 질문에 대한 AI의 해석은 플랫폼마다 다를 수 있음</td></tr>
+</tbody>
+</table>
+</div>
+
+<p style="margin-bottom:8px"><strong>🟢 응답 품질</strong></p>
+<div class="table-wrap" style="margin-top:8px">
+<table class="eq-col">
+<thead><tr><th>항목</th><th>현재</th><th>정식 출시 버전</th></tr></thead>
+<tbody>
+<tr><td><strong>데이터 없을 때</strong></td><td>"현재 데이터 준비 중입니다" 안내 반환</td><td>조회 가능 기간/범위 등 상세 안내 추가</td></tr>
+<tr><td><strong>데이터 출처</strong></td><td>모든 응답에 "모바일인덱스 INSIGHT" 출처 자동 포함</td><td>기준일, 데이터 갱신 주기 등 상세 출처 포함</td></tr>
+<tr><td><strong>응답 포맷</strong></td><td>API JSON 원본 그대로 전달</td><td>핵심 수치 요약 + 상세 데이터 병행</td></tr>
+<tr><td><strong>데이터 크기</strong></td><td>제한 없음 (요청한 만큼 반환)</td><td>기본 반환 개수 제한 (ex. TOP 20), 요청 시 확장</td></tr>
+</tbody>
+</table>
+</div>
+
+<p style="margin-bottom:8px"><strong>🟢 접근 제어</strong></p>
+<div class="table-wrap" style="margin-top:8px">
+<table class="eq-col">
+<thead><tr><th>항목</th><th>현재</th><th>정식 출시 버전</th></tr></thead>
+<tbody>
+<tr><td><strong>무료/유료 구분</strong></td><td>없음 (전체 도구 제공)</td><td>무료는 기본 도구만, 심화 도구는 유료 전용</td></tr>
+<tr><td><strong>호출 제한</strong></td><td>없음</td><td>분당/일일 호출 제한 (비정상 트래픽 방지)</td></tr>
+<tr><td><strong>API 키 관리</strong></td><td>환경변수에 키 목록 수동 관리</td><td>DB 기반 자동 발급/만료/재발급</td></tr>
+</tbody>
+</table>
+</div>
+
+<p style="margin-bottom:8px"><strong>🟢 운영</strong></p>
+<div class="table-wrap" style="margin-top:8px">
+<table class="eq-col">
+<thead><tr><th>항목</th><th>현재</th><th>정식 출시 버전</th></tr></thead>
+<tbody>
+<tr><td><strong>로깅</strong></td><td>없음</td><td>호출 도구명, 사용자 키, 응답 시간, 에러 기록</td></tr>
+<tr><td><strong>모니터링</strong></td><td>없음</td><td>서버 다운/에러율 급증 시 알림 (Slack 등)</td></tr>
+<tr><td><strong>버전 관리</strong></td><td>수동</td><td>모바일인덱스 API 변경 시 MCP 도구 자동 동기화 검토</td></tr>
+</tbody>
+</table>
+</div>
+</div><!-- /tight -->
+</div></div>
+
+
+<!-- 4. 역할 분담 -->
+<div class="section"><div class="container">
+<div class="section-num">4. 역할 분담</div>
+<div class="table-wrap">
+<table>
+<thead><tr><th>작업</th><th>설명</th><th class="tc" style="width:105px">담당</th><th class="tc" style="width:105px">상태</th></tr></thead>
+<tbody>
+<tr><td><strong>MCP 서버 코드 작성</strong></td><td>Insight API 27개 도구를 MCP 서버로 구현</td><td class="tc">기획</td><td class="tc"><span class="tag tag-done">완료</span></td></tr>
+<tr><td><strong>통신 방식 변환</strong></td><td>stdio → SSE 방식, 원격 접속 가능</td><td class="tc">기획</td><td class="tc"><span class="tag tag-done">완료</span></td></tr>
+<tr><td><strong>API 키 인증 코드</strong></td><td>Bearer 토큰 검증 미들웨어</td><td class="tc">기획</td><td class="tc"><span class="tag tag-done">완료</span></td></tr>
+<tr><td><strong>연동 가이드 웹페이지</strong></td><td>5개 AI 플랫폼별 설정 방법</td><td class="tc">기획</td><td class="tc"><span class="tag tag-done">완료</span></td></tr>
+<tr><td><strong>가이드 배포</strong></td><td>🔗 <a href="https://mobileindex-mcp.web.app/guide/" target="_blank">https://mobileindex-mcp.web.app/guide/</a></td><td class="tc">기획</td><td class="tc"><span class="tag tag-done">완료</span></td></tr>
+<tr><td><strong>서버 인프라</strong></td><td>Node.js 18+ 클라우드 서버</td><td class="tc">백엔드</td><td class="tc"><span class="tag tag-wait">대기</span></td></tr>
+<tr><td><strong>도메인 + HTTPS</strong></td><td>🔗 mcp.mobileindex.com/sse + SSL &nbsp;<span class="tag tag-wait">개발 필요</span></td><td class="tc">백엔드</td><td class="tc"><span class="tag tag-wait">대기</span></td></tr>
+<tr><td><strong>환경변수 + 배포</strong></td><td>API 토큰, 허용 키 설정 후 실행</td><td class="tc">백엔드</td><td class="tc"><span class="tag tag-wait">대기</span></td></tr>
+</tbody>
+</table>
+</div>
+
+<blockquote>
+<p><strong>배포 이후 작업</strong></p>
+<p>1️⃣ 연동 테스트 및 가이드 실제 URL 반영</p>
+<p>2️⃣ BETA 고객사 섭외 및 고객별 API 키 발급 &amp; 전달 <span style="color:var(--text-tertiary)">*BETA에서는 수동 발급 가능 (환경변수에 키 추가)</span></p>
+</blockquote>
+</div></div>
+
+<!-- 5. 백엔드 요청 상세 -->
+<div class="section"><div class="container">
+<div class="section-num">5. 백엔드 요청 상세</div>
+
+<h3>5-1. 서버 인프라</h3>
+<div class="table-wrap">
+<table>
+<thead><tr><th style="width:20%">항목</th><th>내용</th></tr></thead>
+<tbody>
+<tr><td><strong>런타임</strong></td><td>Node.js 18 이상</td></tr>
+<tr><td><strong>포트</strong></td><td>3001 (또는 지정)</td></tr>
+<tr><td><strong>프로토콜</strong></td><td>SSE (Server-Sent Events) — 일반 HTTP 위에서 동작</td></tr>
+<tr><td><strong>상태</strong></td><td>Stateless (DB 연결 없음, 매 요청마다 모바일인덱스 API 호출)</td></tr>
+<tr><td><strong>트래픽</strong></td><td>BETA 기준 동시 접속 100명 미만 예상</td></tr>
+</tbody>
+</table>
+</div>
+<blockquote><p><strong>배포 옵션:</strong> EC2 인스턴스 하나에 PM2로 실행 / ECS Fargate 또는 Cloud Run</p></blockquote>
+
+<h3>5-2. 도메인 + HTTPS</h3>
+<p><strong>https://mcp.mobileindex.com</strong> &nbsp;<span class="tag tag-wait">개발 필요</span></p>
+<ul>
+<li>AI 플랫폼이 MCP 서버 연결 시 HTTPS를 필수로 요구</li>
+<li>서브도메인 <code>mcp.mobileindex.com</code> 할당 + SSL 인증서 필요</li>
+<li>BETA 단계에서는 임시 도메인도 가능 (ex. mcp-beta.mobileindex.com)</li>
+</ul>
+
+<h3>5-3. 환경변수</h3>
+<blockquote><p>💡 정식 출시 단계에서 DB 기반 키 관리 시스템으로 전환, BETA 버전에서는 환경변수 방식으로 진행 가능</p></blockquote>
+<div class="code-block">MI_API_TOKEN = 모바일인덱스_Insight_API_토큰
+PORT = 3001
+ALLOWED_API_KEYS = 고객1키, 고객2키, 고객3키</div>
+<div class="table-wrap">
+<table>
+<thead><tr><th style="width:25%">변수</th><th>설명</th></tr></thead>
+<tbody>
+<tr><td><strong><code>MI_API_TOKEN</code></strong></td><td>모바일인덱스 Insight API 호출용 토큰 (현재 코드에 하드코딩된 것을 이관)</td></tr>
+<tr><td><strong><code>ALLOWED_API_KEYS</code></strong></td><td>BETA 고객에게 발급한 키 목록 (쉼표 구분), 새 고객 추가 시 키 추가 후 서버 재시작</td></tr>
+</tbody>
+</table>
+</div>
+
+<p style="font-size:.875rem;color:var(--text-tertiary);margin-top:24px">[참고]<br>PM2 사용 시 : <code>pm2 start mobileindex-mcp-sse.mjs --name mcp-server</code><br>헬스체크 (서버 내장) : <code>GET /health → {"status":"ok","tools":27}</code></p>
+</div></div>
+
+<!-- 6. BETA 사용자 가이드 -->
+<div class="section"><div class="container">
+<div class="section-num">6. BETA 사용자 가이드</div>
+<blockquote><p>💡 사용자는 가이드를 보고 자신의 AI 플랫폼에 URL + API 키를 입력하면 끝</p></blockquote>
+<div class="table-wrap">
+<table>
+<thead><tr><th style="width:25%">항목</th><th>내용</th></tr></thead>
+<tbody>
+<tr><td><strong>API 키</strong></td><td>개인 이메일로 발송</td></tr>
+<tr><td><strong>가이드 URL</strong></td><td>🔗 <a href="https://mobileindex-mcp.web.app/guide/" target="_blank">https://mobileindex-mcp.web.app/guide/</a></td></tr>
+<tr><td><strong>MCP 서버 URL</strong></td><td>🔗 mcp.mobileindex.com/sse &nbsp;<span class="tag tag-wait">개발 필요</span></td></tr>
+</tbody>
+</table>
+</div>
+</div></div>
+
+<!-- 7. 참고 자료 -->
+<div class="section"><div class="container">
+<div class="section-num">7. 참고 자료</div>
+<div class="table-wrap">
+<table>
+<thead><tr><th style="width:20%">항목</th><th style="width:40%">파일</th><th>설명</th></tr></thead>
+<tbody>
+<tr><td><strong>MCP 서버 코드</strong></td><td>📁 <a href="https://drive.google.com/file/d/1seajQHWx_TYuZLJmKIs1WBKG8nmlIyt8/view?usp=drive_link" target="_blank">mobileindex-mcp-sse.mjs</a></td><td>27개 도구 + SSE 통신 + API 키 인증 서버 파일</td></tr>
+<tr><td><strong>의존성 파일</strong></td><td>📁 <a href="https://drive.google.com/file/d/1O1Whm2FrjTFmaqdPT6LCAx3CkyflwIvR/view?usp=drive_link" target="_blank">package.json</a></td><td>서버 실행에 필요한 외부 라이브러리 목록</td></tr>
+<tr><td><strong>연동 가이드</strong></td><td>🔗 <a href="https://mobileindex-mcp.web.app/guide/" target="_blank">https://mobileindex-mcp.web.app/guide/</a></td><td>AI 플랫폼별 MCP 연결 방법 안내 페이지</td></tr>
+</tbody>
+</table>
+</div>
+</div></div>

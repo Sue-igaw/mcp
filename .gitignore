@@ -1,0 +1,8 @@
+node_modules/
+.DS_Store
+guide/node_modules/
+guide/.next/
+guide/out/
+mcp-pj/public/guide/
+.firebase/
+*.log
