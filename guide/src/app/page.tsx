@@ -140,7 +140,18 @@ export default function Page() {
 
           <H3>연결 확인</H3>
           <P>채팅 입력창 하단에 🔨 아이콘 + 숫자가 보이면 성공입니다.<br />Settings &gt; Developer에서 <IC>mobileindex</IC> 옆에 초록색 running 뱃지도 확인할 수 있습니다.</P>
+
+          <H3>Claude CLI</H3>
+          <P>Claude CLI에서도 동일한 SSE 서버에 연결할 수 있습니다. 터미널에서 아래 명령어를 실행하세요.</P>
+          <CodeBlock label="Claude CLI에서 MCP 서버 추가">{`claude mcp add mobileindex --transport sse --url https://mcp.mobileindex.com/sse --header "Authorization: Bearer 여기에_API_키_입력"`}</CodeBlock>
         </Section>
+
+        <Divider />
+
+        <Callout>
+          <strong>Kiro CLI</strong>는 현재 MCP를 지원하지 않아 연결이 불가합니다. Kiro IDE에서 사용해주세요.<br />
+          <strong>Claude CLI</strong>는 위 Claude Desktop 섹션의 안내와 동일한 SSE 서버로 연결 가능합니다.
+        </Callout>
 
         <Divider />
 
