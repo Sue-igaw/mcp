@@ -71,13 +71,13 @@ export default function Page() {
           <table className="w-full text-sm mb-4">
             <thead><tr><Th>항목</Th><Th>설명</Th></tr></thead>
             <tbody>
-              <tr><Td><strong>모바일인덱스 API 키</strong></Td><Td>개인 이메일로 발급 예정</Td></tr>
+              <tr><Td><strong>모바일인덱스 API 키</strong></Td><Td>API 키 수령</Td></tr>
               <tr><Td><strong>MCP 서버 URL</strong></Td><Td><IC>https://mcp.mobileindex.com</IC> <DevBadge /></Td></tr>
-              <tr><Td><strong>AI 플랫폼</strong></Td><Td>Claude, ChatGPT, Kiro, Cursor, Windsurf 중 하나</Td></tr>
+              <tr><Td><strong>AI 플랫폼</strong></Td><Td>Kiro, Claude 중 하나</Td></tr>
             </tbody>
           </table>
           <H3>연결 흐름</H3>
-          <Step num={1}>모바일인덱스에서 요금제 선택 &amp; API 키 발급</Step>
+          <Step num={1}>API 키 수령</Step>
           <Step num={2}>사용 중인 AI 플랫폼의 MCP 설정에 서버 URL + API 키 입력</Step>
           <Step num={3}>연결 완료 → AI에게 자연어로 데이터 요청</Step>
         </Section>
@@ -153,15 +153,10 @@ export default function Page() {
 
         <Divider />
 
-        {/* ChatGPT, Cursor, Windsurf — 추후 추가 예정
-        */}
-
-        <Divider />
-
         {/* 도구 목록 */}
         <Section id="tools" title="사용 가능한 도구 목록">
           <Callout>
-            총 28개 도구를 제공합니다. AI가 질문에 맞는 도구를 자동으로 선택하므로 도구명을 외울 필요는 없습니다.
+            총 27개 도구를 제공합니다. AI가 질문에 맞는 도구를 자동으로 선택하므로 도구명을 외울 필요는 없습니다.
           </Callout>
           {([
             { title: "공통", tools: [["search_app","앱 이름/패키지명으로 앱 검색"],["get_categories_main","업종 대분류 목록 조회"],["get_categories_sub","업종 소분류 목록 조회"]] },
