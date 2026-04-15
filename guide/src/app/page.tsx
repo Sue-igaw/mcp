@@ -85,7 +85,7 @@ export default function Page() {
         <Divider />
 
         {/* Kiro */}
-        <Section id="kiro" title="Kiro">
+        <Section id="kiro" title="Kiro IDE">
           <H3>설정 방법</H3>
           <P>프로젝트 루트에 <IC>.kiro/settings/mcp.json</IC> 파일을 생성하고 아래 내용을 붙여넣습니다.</P>
           <CodeBlock label=".kiro/settings/mcp.json">{`{
@@ -101,11 +101,14 @@ export default function Page() {
 }`}</CodeBlock>
           <H3>연결 확인</H3>
           <P>하단 패널의 MCP 서버 목록에서 <IC>mobileindex</IC>가 초록색(running) 상태인지 확인합니다.</P>
+          <Callout>
+            💡 Kiro CLI는 현재 MCP를 지원하지 않아 연결이 불가합니다. Kiro IDE에서 사용해주세요.
+          </Callout>
         </Section>
 
         <Divider />
 
-        {/* Claude Desktop */}
+        {/* Claude */}
         <Section id="claude" title="Claude Desktop">
           <H3>설정 방법</H3>
           <Step num={1}>Claude Desktop에서 메뉴바 &gt; <strong>Claude</strong> &gt; <strong>Settings</strong></Step>
@@ -145,13 +148,6 @@ export default function Page() {
           <P>Claude CLI에서도 동일한 SSE 서버에 연결할 수 있습니다. 터미널에서 아래 명령어를 실행하세요.</P>
           <CodeBlock label="Claude CLI에서 MCP 서버 추가">{`claude mcp add mobileindex --transport sse --url https://mcp.mobileindex.com/sse --header "Authorization: Bearer 여기에_API_키_입력"`}</CodeBlock>
         </Section>
-
-        <Divider />
-
-        <Callout>
-          <strong>Kiro CLI</strong>는 현재 MCP를 지원하지 않아 연결이 불가합니다. Kiro IDE에서 사용해주세요.<br />
-          <strong>Claude CLI</strong>는 위 Claude Desktop 섹션의 안내와 동일한 SSE 서버로 연결 가능합니다.
-        </Callout>
 
         <Divider />
 
