@@ -224,8 +224,6 @@ export default function Page() {
           <table className="w-full text-sm mb-6">
             <thead><tr><Th>에러</Th><Th>원인</Th><Th>해결</Th></tr></thead>
             <tbody>
-              <tr><Td><IC>401</IC></Td><Td>API 키 오류/만료</Td><Td>마이페이지에서 재확인</Td></tr>
-              <tr><Td><IC>403</IC></Td><Td>요금제 미포함 기능</Td><Td>요금제 업그레이드</Td></tr>
               <tr><Td><IC>429</IC></Td><Td>호출 한도 초과</Td><Td>잠시 후 재시도</Td></tr>
             </tbody>
           </table>
