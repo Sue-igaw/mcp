@@ -41,11 +41,7 @@ export default function SideNav() {
   }, []);
 
   return (
-    <nav className="hidden lg:flex flex-col w-60 shrink-0 border-r border-mi-gray-100 sticky top-0 h-screen overflow-y-auto py-10 px-5">
-      <div className="px-3 mb-8">
-        <div className="text-[14px] font-bold text-mi-black leading-snug">모바일인덱스 MCP <span className="inline-flex items-center text-[10px] font-bold text-mi-violet bg-mi-violet-light px-1.5 py-0.5 rounded-full ml-1 align-middle">BETA</span></div>
-        <div className="text-[13px] text-mi-gray-500 mt-1">연동 가이드</div>
-      </div>
+    <nav className="hidden lg:flex flex-col w-60 shrink-0 border-r border-mi-gray-100 sticky top-[52px] h-[calc(100vh-52px)] overflow-y-auto py-6 px-5">
       {SECTIONS.map((section, i) => (
         <div key={i}>
           {i > 0 && <div className="border-t border-mi-gray-100 my-3 mx-3" />}

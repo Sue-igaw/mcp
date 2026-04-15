@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "pretendard/dist/web/static/pretendard.css";
 import "./globals.css";
+import AuthGate from "@/components/AuthGate";
 
 export const metadata: Metadata = {
   title: "모바일인덱스 MCP 연동 가이드",
@@ -14,7 +15,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko" className="h-full antialiased scroll-smooth">
-      <body className="min-h-full flex flex-col font-pretendard">{children}</body>
+      <head>
+        <link rel="preload" href="/guide/tossface.css" as="style" />
+        <link rel="stylesheet" href="/guide/tossface.css" />
+      </head>
+      <body className="min-h-full flex flex-col font-pretendard">
+        <AuthGate>{children}</AuthGate>
+      </body>
     </html>
   );
 }

@@ -2,6 +2,7 @@ import CodeBlock from "@/components/CodeBlock";
 import Step from "@/components/Step";
 import Callout from "@/components/Callout";
 import SideNav from "@/components/SideNav";
+import SecretField from "@/components/SecretField";
 
 const AUTO_APPROVE = `"autoApprove": [
         "search_app", "get_categories_main", "get_categories_sub",
@@ -68,14 +69,11 @@ export default function Page() {
             <strong>MCP란?</strong><br />Model Context Protocol의 약자로, AI가 외부 데이터를 직접 조회할 수 있게 해주는 표준 프로토콜입니다.<br />한 번 연결하면 &quot;카카오톡 MAU 알려줘&quot;처럼 자연어로 질문하는 것만으로 데이터를 받아볼 수 있습니다.
           </Callout>
           <H3>필요한 것</H3>
-          <table className="w-full text-sm mb-4">
-            <thead><tr><Th>항목</Th><Th>설명</Th></tr></thead>
-            <tbody>
-              <tr><Td><strong>모바일인덱스 API 키</strong></Td><Td>API 키 수령</Td></tr>
-              <tr><Td><strong>MCP 서버 URL</strong></Td><Td><IC>https://mcp.mobileindex.com</IC> <DevBadge /></Td></tr>
-              <tr><Td><strong>AI 플랫폼</strong></Td><Td>Kiro, Claude 중 하나</Td></tr>
-            </tbody>
-          </table>
+          <SecretField label="모바일인덱스 API 키" value="Bearer 6h4aFtDPOHPhCOVACuSNGdWS2/DM5ZC/gEiR7CVODK3cU8vKtwOtfsUYnUe1H+kO" warning="🚨 위 API 키는 내부용 임시로 발급된 키입니다. 테스트 완료 후 폐기 예정이며, 외부 유출을 절대 금지합니다." />
+          <div className="bg-mi-gray-50 rounded-xl px-5 py-4 mb-3">
+            <div className="text-[13px] font-semibold text-mi-gray-500 mb-1.5">MCP 서버 URL</div>
+            <code className="text-[13px] font-mono text-mi-gray-900 break-all select-all">https://mcp-test.mobileindex.com/mi-mcp/sse</code>
+          </div>
           <H3>연결 흐름</H3>
           <Step num={1}>API 키 수령</Step>
           <Step num={2}>사용 중인 AI 플랫폼의 MCP 설정에 서버 URL + API 키 입력</Step>
@@ -89,12 +87,22 @@ export default function Page() {
           <Callout>
             ⚠️ Kiro CLI는 현재 MCP를 지원하지 않아 연결이 불가합니다. Kiro IDE에서 사용해주세요.
           </Callout>
-          <H3>설정 방법</H3>
-          <P>프로젝트 루트에 <IC>.kiro/settings/mcp.json</IC> 파일을 생성하고 아래 내용을 붙여넣습니다.</P>
+
+          <H3>💡 설정 방법 1 — Kiro에게 직접 요청</H3>
+          <Step num={1}>Kiro 채팅창에 아래 명령문을 복사해서 붙여넣기 (API 키는 상단에서 복사)</Step>
+          <CodeBlock label="Kiro 채팅창에 붙여넣기">{`mcp.json에 모바일인덱스 MCP 서버 추가해줘.
+URL은 https://mcp-test.mobileindex.com/mi-mcp/sse 이고
+API 키는 여기에_API_키_입력 이야.
+autoApprove도 전체 도구 다 넣어줘.`}</CodeBlock>
+          <P>Kiro가 <IC>.kiro/settings/mcp.json</IC> 파일을 생성하거나 기존 파일에 추가해줍니다.<br />이미 Figma, Notion 등 다른 MCP 서버가 있어도 알아서 병합합니다.</P>
+
+          <H3>💡 설정 방법 2 — JSON 파일 직접 편집</H3>
+          <Step num={1}>좌측 사이드바에서 Kiro 패널 열기 &gt; <strong>MCP SERVERS</strong> 옆의 ✏️ (편집 아이콘) 클릭<br />또는 직접 <IC>.kiro/settings/mcp.json</IC> 파일 열기</Step>
+          <Step num={2}>아래 내용을 붙여넣고 저장</Step>
           <CodeBlock label=".kiro/settings/mcp.json">{`{
   "mcpServers": {
     "mobileindex": {
-      "url": "https://mcp.mobileindex.com/sse",
+      "url": "https://mcp-test.mobileindex.com/mi-mcp/sse",
       "headers": {
         "Authorization": "Bearer 여기에_API_키_입력"
       },
@@ -102,53 +110,78 @@ export default function Page() {
     }
   }
 }`}</CodeBlock>
-          <H3>연결 확인</H3>
-          <P>하단 패널의 MCP 서버 목록에서 <IC>mobileindex</IC>가 초록색(running) 상태인지 확인합니다.</P>
+          <P>기존에 다른 MCP 서버(Figma, Notion 등)가 설정되어 있다면 전체를 덮어쓰지 말고,<br /><IC>mcpServers</IC> 안에 <IC>&quot;mobileindex&quot;</IC> 블록만 추가하세요.</P>
+          <CodeBlock label="기존 서버가 있을 때 추가 예시">{`{
+  "mcpServers": {
+    "mobileindex": {
+      "url": "https://mcp-test.mobileindex.com/mi-mcp/sse",
+      "headers": {
+        "Authorization": "Bearer 여기에_API_키_입력"
+      },
+      ${AUTO_APPROVE}
+    },
+    "기존-서버": {
+      ...
+    }
+  }
+}`}</CodeBlock>
+          <Callout>
+            ⚠️ 전체를 덮어쓰면 기존 서버 설정이 사라집니다.<br /><IC>mcpServers</IC> 안에 <IC>&quot;mobileindex&quot;</IC> 블록만 추가하세요. 블록 사이에 <strong>쉼표(,)</strong>를 빠뜨리지 않도록 주의합니다.
+          </Callout>
+
+          <H3>✅ 연결 확인</H3>
+          <P>저장하면 자동으로 연결을 시도합니다.<br />Kiro 패널 &gt; <strong>MCP SERVERS</strong> 목록에서 <IC>mobileindex</IC>가 <strong>Connected</strong> 상태인지 확인합니다.</P>
         </Section>
 
         <Divider />
 
         {/* Claude */}
         <Section id="claude" title="📍 Claude Desktop">
-          <H3>설정 방법</H3>
+          <H3>💡 설정 방법</H3>
           <Step num={1}>Claude Desktop에서 메뉴바 &gt; <strong>Claude</strong> &gt; <strong>Settings</strong></Step>
           <Step num={2}>좌측 <strong>Developer</strong> &gt; <strong>Edit Config</strong> 클릭</Step>
           <Step num={3}>아래 내용을 붙여넣고 저장</Step>
           <CodeBlock label="claude_desktop_config.json">{`{
   "mcpServers": {
     "mobileindex": {
-      "url": "https://mcp.mobileindex.com/sse",
-      "headers": {
-        "Authorization": "Bearer 여기에_API_키_입력"
-      }
+      "command": "npx",
+      "args": [
+        "-y",
+        "mcp-remote",
+        "https://mcp-test.mobileindex.com/mi-mcp/sse",
+        "--header",
+        "Authorization: Bearer 여기에_API_키_입력"
+      ]
     }
   }
 }`}</CodeBlock>
-          <P>기존 설정(<IC>preferences</IC> 등)이 있다면 전체를 덮어쓰지 말고,<br />같은 레벨에 <IC>mcpServers</IC> 블록만 추가하세요.</P>
-          <Step num={4}>Claude Desktop <strong>완전히 종료 → 재시작</strong></Step>
-
-          <H3>도구 자동 승인 (선택)</H3>
-          <P>기본적으로 도구 호출 시마다 Allow 승인이 필요합니다.<br />매번 누르기 번거롭다면 <IC>autoApprove</IC>를 추가하세요.</P>
-          <CodeBlock label="autoApprove 포함">{`{
+          <P>기존 설정(<IC>preferences</IC> 등)이 있다면 전체를 덮어쓰지 말고,<br /><IC>mcpServers</IC> 안에 <IC>&quot;mobileindex&quot;</IC> 블록만 추가하세요.</P>
+          <CodeBlock label="기존 설정이 있을 때 추가 예시">{`{
   "mcpServers": {
     "mobileindex": {
-      "url": "https://mcp.mobileindex.com/sse",
-      "headers": {
-        "Authorization": "Bearer 여기에_API_키_입력"
-      },
-      ${AUTO_APPROVE}
-    }
-  }
+      "command": "npx",
+      "args": [
+        "-y",
+        "mcp-remote",
+        "https://mcp-test.mobileindex.com/mi-mcp/sse",
+        "--header",
+        "Authorization: Bearer 여기에_API_키_입력"
+      ]
+    },
+    "기존-서버": { ... }
+  },
+  "preferences": { ... }
 }`}</CodeBlock>
+          <Step num={4}>Claude Desktop <strong>완전히 종료 → 재시작</strong></Step>
 
-          <H3>연결 확인</H3>
+          <H3>✅ 연결 확인</H3>
           <P>채팅 입력창 하단에 🔨 아이콘 + 숫자가 보이면 성공입니다.<br />Settings &gt; Developer에서 <IC>mobileindex</IC> 옆에 초록색 running 뱃지도 확인할 수 있습니다.</P>
         </Section>
 
         {/* Claude CLI */}
         <Section id="claude-cli" title="📍 Claude CLI">
           <P>Claude CLI에서도 동일한 SSE 서버에 연결할 수 있습니다. 터미널에서 아래 명령어를 실행하세요.</P>
-          <CodeBlock label="Claude CLI에서 MCP 서버 추가">{`claude mcp add mobileindex --transport sse --url https://mcp.mobileindex.com/sse --header "Authorization: Bearer 여기에_API_키_입력"`}</CodeBlock>
+          <CodeBlock label="Claude CLI에서 MCP 서버 추가">{`claude mcp add --transport sse mobileindex https://mcp-test.mobileindex.com/mi-mcp/sse --header "Authorization: Bearer 여기에_API_키_입력"`}</CodeBlock>
         </Section>
 
         <Divider />
@@ -199,6 +232,19 @@ export default function Page() {
 "네이버 사용자가 동시에 쓰는 앱 분석해줘"
 "구글 플레이 무료 앱 순위 (미국)"`}</CodeBlock>
           <CodeBlock label="처리 흐름">{`질의 접수 → 앱 검색 → API 호출 → 데이터 수집 → 분석 결과 응답`}</CodeBlock>
+
+          <H3>💡 더 정확한 응답을 받는 팁</H3>
+          <Callout>
+            <strong>&quot;배달의민족 사용자 알려줘&quot;</strong>처럼 질문하면, AI가 웹 검색을 먼저 시도하는 경우가 있습니다.<br /><br />
+            이때 질문 앞에 <strong>&quot;모바일인덱스 MCP 활용해서&quot;</strong>를 붙이면,<br />
+            AI가 <strong>웹 검색 대신 모바일인덱스 MCP 도구를 우선 호출</strong>하여 실제 모바일인덱스 데이터를 기반으로 응답합니다.
+          </Callout>
+          <CodeBlock label="❌ 웹 검색으로 빠질 수 있는 질의">{`"배달의민족 사용자 수 알려줘"
+→ AI가 웹 검색을 먼저 시도할 수 있음`}</CodeBlock>
+          <CodeBlock label="✅ 모바일인덱스 데이터를 바로 조회하는 질의">{`"모바일인덱스 MCP 활용해서 배달의민족 사용자 수 알려줘"
+"모바일인덱스 MCP 활용해서 쿠팡 vs 네이버쇼핑 충성도 비교해줘"
+"모바일인덱스 MCP 활용해서 이번 달 게임 매출 순위 TOP 10 보여줘"
+→ AI가 웹 검색 없이 모바일인덱스 MCP 도구를 바로 호출`}</CodeBlock>
         </Section>
 
         <Divider />
