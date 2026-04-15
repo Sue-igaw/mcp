@@ -234,17 +234,11 @@ export default function Page() {
           <table className="w-full text-sm mb-6">
             <thead><tr><Th>플랫폼</Th><Th>방법</Th></tr></thead>
             <tbody>
-              <tr><Td>Claude Desktop</Td><Td>앱 완전 종료 후 재실행</Td></tr>
-              <tr><Td>ChatGPT</Td><Td>Settings &gt; MCP Servers에서 재연결</Td></tr>
               <tr><Td>Kiro</Td><Td>자동 재연결 또는 MCP 서버 뷰에서 수동</Td></tr>
-              <tr><Td>Cursor</Td><Td>Settings &gt; MCP에서 서버 재시작</Td></tr>
-              <tr><Td>Windsurf</Td><Td>앱 재시작 또는 MCP 패널에서 재연결</Td></tr>
+              <tr><Td>Claude Desktop</Td><Td>앱 완전 종료 후 재실행</Td></tr>
+              <tr><Td>Claude CLI</Td><Td>터미널에서 Claude 재시작</Td></tr>
             </tbody>
           </table>
-
-          <Callout>
-            위 방법으로 해결되지 않으면 <IC>mi_help@igaworks.com</IC>으로 문의해주세요.
-          </Callout>
         </Section>
 
         <footer className="text-center text-mi-gray-500 text-[12px] mt-16 pt-6 border-t border-mi-gray-100">
