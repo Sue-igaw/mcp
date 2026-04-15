@@ -85,7 +85,7 @@ export default function Page() {
         <Divider />
 
         {/* Kiro */}
-        <Section id="kiro" title="🏷️ Kiro IDE">
+        <Section id="kiro" title="📍 Kiro IDE">
           <Callout>
             ⚠️ Kiro CLI는 현재 MCP를 지원하지 않아 연결이 불가합니다. Kiro IDE에서 사용해주세요.
           </Callout>
@@ -109,7 +109,7 @@ export default function Page() {
         <Divider />
 
         {/* Claude */}
-        <Section id="claude" title="🏷️ Claude Desktop">
+        <Section id="claude" title="📍 Claude Desktop">
           <H3>설정 방법</H3>
           <Step num={1}>Claude Desktop에서 메뉴바 &gt; <strong>Claude</strong> &gt; <strong>Settings</strong></Step>
           <Step num={2}>좌측 <strong>Developer</strong> &gt; <strong>Edit Config</strong> 클릭</Step>
@@ -146,7 +146,7 @@ export default function Page() {
         </Section>
 
         {/* Claude CLI */}
-        <Section id="claude-cli" title="🏷️ Claude CLI">
+        <Section id="claude-cli" title="📍 Claude CLI">
           <P>Claude CLI에서도 동일한 SSE 서버에 연결할 수 있습니다. 터미널에서 아래 명령어를 실행하세요.</P>
           <CodeBlock label="Claude CLI에서 MCP 서버 추가">{`claude mcp add mobileindex --transport sse --url https://mcp.mobileindex.com/sse --header "Authorization: Bearer 여기에_API_키_입력"`}</CodeBlock>
         </Section>
