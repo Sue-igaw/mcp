@@ -9,7 +9,6 @@ const SECTIONS: { items: { id: string; label: string; icon?: string }[] }[] = [
     items: [
       { id: "kiro", label: "Kiro", icon: "https://kiro.dev/favicon.ico" },
       { id: "claude", label: "Claude", icon: "https://claude.com/favicon.ico" },
-      { id: "claude-cli", label: "Claude CLI", icon: "https://claude.com/favicon.ico" },
     ],
   },
   {
